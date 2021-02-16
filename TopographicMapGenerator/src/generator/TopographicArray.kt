@@ -67,7 +67,7 @@ class TopographicArray(val algoName: String, val array: Array<FloatArray>) {
             for (y in 0..(nbRows - 1)) {
 
                 val colorValue = if (array[x][y] >= 0) {
-                    (255.0 * array[x][y])
+                    (255.0 * (1.0f - array[x][y]))
                 } else {
                     .0
                 }
