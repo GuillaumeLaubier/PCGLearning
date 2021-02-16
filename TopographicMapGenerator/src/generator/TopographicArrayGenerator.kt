@@ -8,6 +8,12 @@ class TopographicArrayGenerator(val nbRows: Int = 500, val nbColumns: Int = 500)
         return TopographicArray(Array(nbRows) { FloatArray(nbColumns) { Random.nextFloat() } })
     }
 
+    /**
+     * The current pixel will be:
+     * - .05 higher or lower of the left pixel.
+     * - .05 higher or lower of the pixel above, if left pixel is not set
+     * - Fully random if left and above pixels are not set.
+     */
     fun generate(): TopographicArray {
         // First set of rules
         // The first pixel is randomly set.
