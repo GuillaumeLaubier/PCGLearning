@@ -1,4 +1,6 @@
+import generator.TopographicArrayGenerator
 import javafx.embed.swing.SwingFXUtils
+import javafx.scene.image.Image
 import javafx.scene.image.WritableImage
 import javafx.scene.paint.Color
 import java.io.ByteArrayOutputStream
@@ -8,26 +10,16 @@ import java.time.format.DateTimeFormatter
 import javax.imageio.ImageIO
 
 fun main() {
-    val writableImage = WritableImage(500, 500)
+    writeImage(TopographicArrayGenerator().generate().toImage())
+}
 
-    for (x in 0..499) {
-        for (y in 0..499) {
-            writableImage.pixelWriter.setColor(x, y, Color.WHITE)
-        }
-    }
-
-    for (x in 100..299) {
-        for (y in 50..399) {
-            writableImage.pixelWriter.setColor(x, y, Color.RED)
-        }
-    }
-
+fun writeImage(image: Image) {
     val byteOutput = ByteArrayOutputStream()
 
     val timestamp = DateTimeFormatter.ISO_INSTANT.format(Instant.now())
     val file = File("results/$timestamp.png")
 
-    ImageIO.write(SwingFXUtils.fromFXImage(writableImage, null), "png", byteOutput)
+    ImageIO.write(SwingFXUtils.fromFXImage(image, null), "png", byteOutput)
 
     file.writeBytes(byteOutput.toByteArray())
 }
