@@ -67,12 +67,14 @@ class TopographicArray(val algoName: String, val array: Array<FloatArray>) {
             for (y in 0..(nbRows - 1)) {
 
                 val colorValue = if (array[x][y] >= 0) {
-                    (255 * array[x][y]).toInt()
+                    (255.0 * array[x][y])
                 } else {
-                    0
+                    .0
                 }
 
-                writableImage.pixelWriter.setColor(x, y, Color.rgb(colorValue, colorValue, colorValue))
+                val color = Color.hsb(colorValue, .8, 1.0)
+
+                writableImage.pixelWriter.setColor(x, y, color)
             }
         }
 

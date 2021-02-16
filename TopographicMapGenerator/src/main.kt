@@ -9,18 +9,8 @@ import java.time.format.DateTimeFormatter
 import javax.imageio.ImageIO
 
 fun main() {
-    val generator = TopographicArrayGenerator()
+    val generator = TopographicArrayGenerator(1000, 1000)
 
-    writeTopographicImage(generator.generateTotallyRandom())
-    writeTopographicImage(generator.generateTotallyRandom())
-    writeTopographicImage(generator.generateTotallyRandom())
-
-    writeTopographicImage(generator.generateA())
-    writeTopographicImage(generator.generateA())
-    writeTopographicImage(generator.generateA())
-
-    writeTopographicImage(generator.generateB())
-    writeTopographicImage(generator.generateB())
     writeTopographicImage(generator.generateB())
 }
 
