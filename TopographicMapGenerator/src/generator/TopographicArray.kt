@@ -4,7 +4,7 @@ import javafx.scene.image.Image
 import javafx.scene.image.WritableImage
 import javafx.scene.paint.Color
 
-class TopographicArray(val array: Array<FloatArray>) {
+class TopographicArray(val algoName: String, val array: Array<FloatArray>) {
 
     val nbColumns = array.size
     val nbRows = array[0].size
@@ -78,6 +78,4 @@ class TopographicArray(val array: Array<FloatArray>) {
 
         return writableImage
     }
-
-
 }
