@@ -1,8 +1,6 @@
 import generator.TopographicArrayGenerator
 import javafx.embed.swing.SwingFXUtils
 import javafx.scene.image.Image
-import javafx.scene.image.WritableImage
-import javafx.scene.paint.Color
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.time.Instant
