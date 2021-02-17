@@ -15,14 +15,25 @@ fun main() {
     recursiveDepthFirst(grid[0, 0])
 
     writeImage(grid.getImage())
+    writeImage(grid[0, 0].getImage())
+    writeImage(grid[0, 1].getImage())
+    writeImage(grid[0, 2].getImage())
+
+    val cell = MazeCell(0, 0, grid)
+    cell.hasLeftWall = false
+    cell.hasRightWall = false
+    cell.hasBottomWall = false
+    cell.hasTopWall = false
+    cell.isVisited = true
+    writeImage(cell.getImage())
 }
 
 fun recursiveDepthFirst(currentCell: MazeCell) {
     currentCell.isVisited = true
 
-    while (currentCell.getUnvisitedNeighbour().count() > 0) {
+    while (currentCell.getUnvisitedNeighbour().size > 0) {
         val randomIndex = try {
-            Random.nextInt(0, currentCell.getUnvisitedNeighbour().count() - 1)
+            (Random.nextFloat() * currentCell.getUnvisitedNeighbour().size).toInt()
         } catch (_: Exception) {
             0
         }
@@ -38,7 +49,7 @@ fun writeImage(image: Image) {
     val byteOutput = ByteArrayOutputStream()
 
     val timestamp = DateTimeFormatter.ISO_INSTANT.format(Instant.now())
-    val file = File("results/$timestamp.png")
+    val file = File("results/tests/$timestamp.png")
 
     ImageIO.write(SwingFXUtils.fromFXImage(image, null), "png", byteOutput)
 

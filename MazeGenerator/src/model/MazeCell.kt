@@ -134,7 +134,10 @@ class MazeCell(val positionX: Int, val positionY: Int, val parentGrid: MazeGrid)
     fun getImage(): Image {
         val writableImage = WritableImage(width, height)
 
-        draw(writableImage.pixelWriter, 0, width - 1, 0, height - 1, Color.WHITE)
+        val color = if (isVisited) { Color.WHITE } else { Color.BLACK }
+        draw(writableImage.pixelWriter, 0, width - 1, 0, height - 1, color)
+
+        drawCorners(writableImage.pixelWriter, Color.BLACK)
 
         if (hasTopWall) {
             draw(writableImage.pixelWriter, 0, width - 1, 0, (height / 4) - 1, Color.BLACK)
@@ -161,5 +164,19 @@ class MazeCell(val positionX: Int, val positionY: Int, val parentGrid: MazeGrid)
                 pixelWriter.setColor(x, y, color)
             }
         }
+    }
+
+    private fun drawCorners(pixelWriter: PixelWriter, color: Color) {
+        // Top left corner
+        draw(pixelWriter, 0, (width / 4) - 1, 0, (height / 4) - 1, color)
+
+        // Top right corner
+        draw(pixelWriter, (width / 4) * 3, width -1, 0, (height / 4) - 1, color)
+
+        // Bottom left corner
+        draw(pixelWriter, 0, (width / 4) - 1, (height / 4) * 3, height - 1, color)
+
+        // Bottom right corner
+        draw(pixelWriter, (width / 4) * 3, width - 1, (height / 4) * 3, height - 1, color)
     }
 }
