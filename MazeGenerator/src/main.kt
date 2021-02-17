@@ -10,7 +10,7 @@ import javax.imageio.ImageIO
 import kotlin.random.Random
 
 fun main() {
-    val grid = MazeGrid(20, 10)
+    val grid = MazeGrid(15, 15)
 
     recursiveDepthFirst(grid[0, 0])
 
@@ -19,6 +19,8 @@ fun main() {
 
 fun recursiveDepthFirst(currentCell: MazeCell) {
     currentCell.isVisited = true
+
+    writeImage(currentCell.parentGrid.getImage())
 
     while (currentCell.getUnvisitedNeighbour().size > 0) {
         val randomIndex = try {
