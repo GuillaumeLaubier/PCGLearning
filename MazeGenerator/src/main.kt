@@ -1,6 +1,7 @@
 import javafx.embed.swing.SwingFXUtils
 import javafx.scene.image.Image
 import model.MazeCell
+import model.MazeGrid
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.time.Instant
@@ -8,7 +9,7 @@ import java.time.format.DateTimeFormatter
 import javax.imageio.ImageIO
 
 fun main() {
-    writeImage(MazeCell().getImage())
+    writeImage(MazeGrid(10, 10).getImage())
 }
 
 fun writeImage(image: Image) {

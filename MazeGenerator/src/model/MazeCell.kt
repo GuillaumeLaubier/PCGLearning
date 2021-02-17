@@ -5,10 +5,12 @@ import javafx.scene.image.PixelWriter
 import javafx.scene.image.WritableImage
 import javafx.scene.paint.Color
 
-class MazeCell() {
+class MazeCell {
 
-    val width = 40
-    val height = 40
+    companion object {
+        const val width = 40
+        const val height = 40
+    }
 
     var isVisited = false
 
