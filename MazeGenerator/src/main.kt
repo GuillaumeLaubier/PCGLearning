@@ -7,9 +7,31 @@ import java.io.File
 import java.time.Instant
 import java.time.format.DateTimeFormatter
 import javax.imageio.ImageIO
+import kotlin.random.Random
 
 fun main() {
-    writeImage(MazeGrid(10, 10).getImage())
+    val grid = MazeGrid(10, 10)
+
+    recursiveDepthFirst(grid[0, 0])
+
+    writeImage(grid.getImage())
+}
+
+fun recursiveDepthFirst(currentCell: MazeCell) {
+    currentCell.isVisited = true
+
+    while (currentCell.getUnvisitedNeighbour().count() > 0) {
+        val randomIndex = try {
+            Random.nextInt(0, currentCell.getUnvisitedNeighbour().count() - 1)
+        } catch (_: Exception) {
+            0
+        }
+
+        val nextCell = currentCell.getUnvisitedNeighbour()[randomIndex]
+        currentCell.removeWallWith(nextCell)
+
+        recursiveDepthFirst(nextCell)
+    }
 }
 
 fun writeImage(image: Image) {
