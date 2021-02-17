@@ -99,7 +99,7 @@ class MazeCell(val positionX: Int, val positionY: Int, val parentGrid: MazeGrid)
             }
             NeighbourPosition.BOTTOM -> {
                 hasBottomWall = false
-                cell.hasTopWall
+                cell.hasTopWall = false
             }
             NeighbourPosition.LEFT -> {
                 hasLeftWall = false
@@ -121,7 +121,7 @@ class MazeCell(val positionX: Int, val positionY: Int, val parentGrid: MazeGrid)
                 NeighbourPosition.LEFT
             } else if (positionX - cell.positionX == -1 && positionY - cell.positionY == 0) {
                 NeighbourPosition.RIGHT
-            } else if (positionX - cell.positionX == 1 && positionY - cell.positionY == 1) {
+            } else if (positionX - cell.positionX == 0 && positionY - cell.positionY == 1) {
                 NeighbourPosition.TOP
             } else {
                 NeighbourPosition.BOTTOM

@@ -10,22 +10,11 @@ import javax.imageio.ImageIO
 import kotlin.random.Random
 
 fun main() {
-    val grid = MazeGrid(10, 10)
+    val grid = MazeGrid(20, 10)
 
     recursiveDepthFirst(grid[0, 0])
 
     writeImage(grid.getImage())
-    writeImage(grid[0, 0].getImage())
-    writeImage(grid[0, 1].getImage())
-    writeImage(grid[0, 2].getImage())
-
-    val cell = MazeCell(0, 0, grid)
-    cell.hasLeftWall = false
-    cell.hasRightWall = false
-    cell.hasBottomWall = false
-    cell.hasTopWall = false
-    cell.isVisited = true
-    writeImage(cell.getImage())
 }
 
 fun recursiveDepthFirst(currentCell: MazeCell) {
