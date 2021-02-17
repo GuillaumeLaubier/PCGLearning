@@ -17,6 +17,12 @@ class TopographicArray(val algoName: String, val array: Array<FloatArray>) {
     }
 
     operator fun set(x: Int, y: Int, value: Float) {
+        if (x in 0..(nbColumns - 1) && y in 0..(nbRows - 1)) {
+            array[x][y] = value
+        }
+    }
+
+    fun safeSet(x: Int, y: Int, value: Float) {
         val finalValue: Float = when {
             value < 0 -> 0.0f
             value >= 1 -> 1.0f

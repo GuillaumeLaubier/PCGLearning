@@ -11,7 +11,7 @@ import javax.imageio.ImageIO
 fun main() {
     val generator = TopographicArrayGenerator(1000, 1000)
 
-    writeTopographicImage(generator.generateB())
+    writeTopographicImage(generator.generatePerlinNoise())
 }
 
 fun writeTopographicImage(topographicArray: TopographicArray) {
