@@ -7,7 +7,7 @@ import javafx.scene.paint.Color
 import java.lang.Exception
 import kotlin.math.absoluteValue
 
-class MazeCell(val positionX: Int, val positionY: Int, val parentGrid: MazeGrid) {
+class FirstTestMazeCell(val positionX: Int, val positionY: Int, val parentGrid: FirstTestMazeGrid) {
 
     companion object {
         const val width = 40
@@ -29,7 +29,7 @@ class MazeCell(val positionX: Int, val positionY: Int, val parentGrid: MazeGrid)
     var hasLeftWall = true
     var hasRightWall = true
 
-    fun getTopNeighbour(): MazeCell? {
+    fun getTopNeighbour(): FirstTestMazeCell? {
         return try {
             parentGrid[positionX, positionY - 1]
         } catch (_: Exception) {
@@ -37,7 +37,7 @@ class MazeCell(val positionX: Int, val positionY: Int, val parentGrid: MazeGrid)
         }
     }
 
-    fun getBottomNeighbour(): MazeCell? {
+    fun getBottomNeighbour(): FirstTestMazeCell? {
         return try {
             parentGrid[positionX, positionY + 1]
         } catch (_: Exception) {
@@ -45,7 +45,7 @@ class MazeCell(val positionX: Int, val positionY: Int, val parentGrid: MazeGrid)
         }
     }
 
-    fun getLeftNeighbour(): MazeCell? {
+    fun getLeftNeighbour(): FirstTestMazeCell? {
         return try {
             parentGrid[positionX - 1, positionY]
         } catch (_: Exception) {
@@ -53,7 +53,7 @@ class MazeCell(val positionX: Int, val positionY: Int, val parentGrid: MazeGrid)
         }
     }
 
-    fun getRightNeighbour(): MazeCell? {
+    fun getRightNeighbour(): FirstTestMazeCell? {
         return try {
             parentGrid[positionX + 1, positionY]
         } catch (_: Exception) {
@@ -61,8 +61,8 @@ class MazeCell(val positionX: Int, val positionY: Int, val parentGrid: MazeGrid)
         }
     }
 
-    fun getUnvisitedNeighbour(): ArrayList<MazeCell> {
-        val list = ArrayList<MazeCell>()
+    fun getUnvisitedNeighbour(): ArrayList<FirstTestMazeCell> {
+        val list = ArrayList<FirstTestMazeCell>()
 
         getTopNeighbour()?.let {
             if (!it.isVisited) {
@@ -91,7 +91,7 @@ class MazeCell(val positionX: Int, val positionY: Int, val parentGrid: MazeGrid)
         return list
     }
 
-    fun removeWallWith(cell: MazeCell) {
+    fun removeWallWith(cell: FirstTestMazeCell) {
         when (whichNeighbour(cell)) {
             NeighbourPosition.TOP -> {
                 hasTopWall = false
@@ -113,7 +113,7 @@ class MazeCell(val positionX: Int, val positionY: Int, val parentGrid: MazeGrid)
         }
     }
 
-    private fun whichNeighbour(cell: MazeCell): NeighbourPosition {
+    private fun whichNeighbour(cell: FirstTestMazeCell): NeighbourPosition {
         // Check if this is a real neighbour
         return if ((positionX - cell.positionX).absoluteValue == 1 && positionY - cell.positionY == 0
                 || positionX - cell.positionX == 0 && (positionY - cell.positionY).absoluteValue == 1) {

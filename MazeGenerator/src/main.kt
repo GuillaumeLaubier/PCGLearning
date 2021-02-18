@@ -1,7 +1,7 @@
 import javafx.embed.swing.SwingFXUtils
 import javafx.scene.image.Image
-import model.MazeCell
-import model.MazeGrid
+import model.FirstTestMazeCell
+import model.FirstTestMazeGrid
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.time.Instant
@@ -10,17 +10,15 @@ import javax.imageio.ImageIO
 import kotlin.random.Random
 
 fun main() {
-    val grid = MazeGrid(15, 15)
+    val grid = FirstTestMazeGrid(15, 15)
 
     recursiveDepthFirst(grid[0, 0])
 
     writeImage(grid.getImage())
 }
 
-fun recursiveDepthFirst(currentCell: MazeCell) {
+fun recursiveDepthFirst(currentCell: FirstTestMazeCell) {
     currentCell.isVisited = true
-
-    writeImage(currentCell.parentGrid.getImage())
 
     while (currentCell.getUnvisitedNeighbour().size > 0) {
         val randomIndex = try {
@@ -40,7 +38,7 @@ fun writeImage(image: Image) {
     val byteOutput = ByteArrayOutputStream()
 
     val timestamp = DateTimeFormatter.ISO_INSTANT.format(Instant.now())
-    val file = File("results/tests/$timestamp.png")
+    val file = File("results/$timestamp.png")
 
     ImageIO.write(SwingFXUtils.fromFXImage(image, null), "png", byteOutput)
 
