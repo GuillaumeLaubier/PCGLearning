@@ -1,4 +1,5 @@
 import javafx.scene.image.Image
+import model.ArrayListMazeGrid
 import model.FirstTestMazeCell
 import model.FirstTestMazeGrid
 import kotlin.random.Random
@@ -31,5 +32,13 @@ class MazeGenerator{
     }
 
 
+    /*fun generateByRecursiveDivision(width: Int, height: Int): Image {
+
+        val grid = ArrayListMazeGrid(width, height)
+
+
+
+
+    }*/
 
 }
