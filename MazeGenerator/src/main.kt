@@ -10,29 +10,12 @@ import javax.imageio.ImageIO
 import kotlin.random.Random
 
 fun main() {
-    val grid = FirstTestMazeGrid(15, 15)
+    val generator = MazeGenerator()
 
-    recursiveDepthFirst(grid[0, 0])
-
-    writeImage(grid.getImage())
+    writeImage(generator.generateFirstTestMaze(15, 15))
 }
 
-fun recursiveDepthFirst(currentCell: FirstTestMazeCell) {
-    currentCell.isVisited = true
 
-    while (currentCell.getUnvisitedNeighbour().size > 0) {
-        val randomIndex = try {
-            (Random.nextFloat() * currentCell.getUnvisitedNeighbour().size).toInt()
-        } catch (_: Exception) {
-            0
-        }
-
-        val nextCell = currentCell.getUnvisitedNeighbour()[randomIndex]
-        currentCell.removeWallWith(nextCell)
-
-        recursiveDepthFirst(nextCell)
-    }
-}
 
 fun writeImage(image: Image) {
     val byteOutput = ByteArrayOutputStream()
