@@ -30,7 +30,7 @@ abstract class MazeCell(val positionX: Int, val positionY: Int) {
         val color = when (type) {
             CellType.CORRIDOR -> Color.WHITE
             CellType.WALL, CellType.BOARD_WALL, CellType.BOARD_CORNER -> Color.BLACK
-            CellType.UNDEFINED -> Color.DARKGRAY
+            CellType.UNDEFINED -> Color.WHITE
             CellType.START -> Color.GREEN
             CellType.END -> Color.RED
         }

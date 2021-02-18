@@ -11,9 +11,8 @@ import javax.imageio.ImageIO
 import kotlin.random.Random
 
 fun main() {
-    val grid = ArrayListMazeGrid(10, 10)
+    MazeGenerator().generateByRecursiveDivision(50, 50)
 
-    writeImage(grid.toImage())
 }
 
 
@@ -22,7 +21,7 @@ fun writeImage(image: Image) {
     val byteOutput = ByteArrayOutputStream()
 
     val timestamp = DateTimeFormatter.ISO_INSTANT.format(Instant.now())
-    val file = File("results/$timestamp.png")
+    val file = File("results/tests/$timestamp.png")
 
     ImageIO.write(SwingFXUtils.fromFXImage(image, null), "png", byteOutput)
 
