@@ -1,5 +1,6 @@
 import javafx.embed.swing.SwingFXUtils
 import javafx.scene.image.Image
+import model.ArrayListMazeGrid
 import model.FirstTestMazeCell
 import model.FirstTestMazeGrid
 import java.io.ByteArrayOutputStream
@@ -10,9 +11,9 @@ import javax.imageio.ImageIO
 import kotlin.random.Random
 
 fun main() {
-    val generator = MazeGenerator()
+    val grid = ArrayListMazeGrid(10, 10)
 
-    writeImage(generator.generateFirstTestMaze(15, 15))
+    writeImage(grid.toImage())
 }
 
 
