@@ -1,18 +1,12 @@
 import javafx.embed.swing.SwingFXUtils
 import javafx.scene.image.Image
-import model.ArrayListMazeGrid
-import model.FirstTestMazeCell
-import model.FirstTestMazeGrid
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.time.Instant
 import java.time.format.DateTimeFormatter
 import javax.imageio.ImageIO
-import kotlin.random.Random
 
 fun main() {
-    val grid = MazeGenerator().generateWilsonMaze(51, 51)
-    writeImage(grid.toImage())
 }
 
 

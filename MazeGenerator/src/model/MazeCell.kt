@@ -4,7 +4,7 @@ package model
  * A MazeCell represent a bunch of Mazetile. Generally, the center of the MazeCell is a corridor, and all other tiles
  * cann be either wall or other corridors.
  */
-class MazeCell(val centerTile: MazeTile, val grid: ArrayListMazeGrid) {
+class MazeCell(val centerTile: MazeTile, val grid: MazeGrid) {
 
     val topTile = grid[centerTile.positionX, centerTile.positionY - 1]
     val bottomTile = grid[centerTile.positionX, centerTile.positionY + 1]

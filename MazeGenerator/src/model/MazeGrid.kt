@@ -3,7 +3,7 @@ package model
 import javafx.scene.image.Image
 import javafx.scene.image.WritableImage
 
-class ArrayListMazeGrid(val mazeWidth: Int, val mazeHeight: Int, initialType: MazeTile.TileType = MazeTile.TileType.UNDEFINED) {
+class MazeGrid(val mazeWidth: Int, val mazeHeight: Int, initialType: MazeTile.TileType = MazeTile.TileType.UNDEFINED) {
 
     // 2 extras cells for board walls
     val boardWidth = mazeWidth + 2
@@ -15,7 +15,7 @@ class ArrayListMazeGrid(val mazeWidth: Int, val mazeHeight: Int, initialType: Ma
         for (x in 0..(boardWidth - 1)) {
 
             for (y in 0..(boardHeight - 1)) {
-                val cell = ArrayListMazeTile(x, y, this)
+                val cell = MazeTile(x, y, this)
 
                 // Immediately define board walls and corners
                 if (x == 0 && y == 0

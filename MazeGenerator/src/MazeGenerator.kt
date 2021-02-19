@@ -37,8 +37,8 @@ class MazeGenerator {
         }
     }
 
-    fun generateDepthFirstMaze(width: Int, height: Int): ArrayListMazeGrid {
-        val grid = ArrayListMazeGrid(width, height, MazeTile.TileType.WALL)
+    fun generateDepthFirstMaze(width: Int, height: Int): MazeGrid {
+        val grid = MazeGrid(width, height, MazeTile.TileType.WALL)
 
         writeImage(grid.toImage())
 
@@ -63,9 +63,9 @@ class MazeGenerator {
         }
     }
 
-    fun generateByRecursiveDivisionMaze(width: Int, height: Int): ArrayListMazeGrid {
+    fun generateByRecursiveDivisionMaze(width: Int, height: Int): MazeGrid {
 
-        val grid = ArrayListMazeGrid(width, height)
+        val grid = MazeGrid(width, height)
 
         recursiveDivision(grid, 1, 1, width, height)
         grid.defineStartAndFinish()
@@ -73,7 +73,7 @@ class MazeGenerator {
         return grid
     }
 
-    private fun recursiveDivision(grid: ArrayListMazeGrid, startX: Int, startY: Int, width: Int, height: Int) {
+    private fun recursiveDivision(grid: MazeGrid, startX: Int, startY: Int, width: Int, height: Int) {
 
         if (height == 0 || width == 0) {
             return
@@ -165,8 +165,8 @@ class MazeGenerator {
         }
     }
 
-    fun generatePrimsMaze(width: Int, height: Int): ArrayListMazeGrid {
-        val grid = ArrayListMazeGrid(width, height, MazeTile.TileType.WALL)
+    fun generatePrimsMaze(width: Int, height: Int): MazeGrid {
+        val grid = MazeGrid(width, height, MazeTile.TileType.WALL)
 
         primsGeneration(grid)
         grid.defineStartAndFinish()
@@ -175,7 +175,7 @@ class MazeGenerator {
     }
 
     // Might be useful later for pathfinding
-    private fun primsGeneration(grid: ArrayListMazeGrid, wallStack: ArrayList<Pair<MazeTile, MazeCell>> = ArrayList()) {
+    private fun primsGeneration(grid: MazeGrid, wallStack: ArrayList<Pair<MazeTile, MazeCell>> = ArrayList()) {
         if (!grid.board.any { it.type == MazeTile.TileType.CORRIDOR }) {
             // This is the first iteration
 
@@ -223,7 +223,7 @@ class MazeGenerator {
 
     // Might be useful later for pathfinding
     private fun brokenPrimsGeneration(
-        grid: ArrayListMazeGrid,
+        grid: MazeGrid,
         wallStack: ArrayList<Pair<MazeTile, MazeTile>> = ArrayList()
     ) {
         if (!grid.board.any { it.type == MazeTile.TileType.CORRIDOR }) {
@@ -262,8 +262,8 @@ class MazeGenerator {
         }
     }
 
-    fun generateAldousBroderMaze(width: Int, height: Int): ArrayListMazeGrid {
-        val grid = ArrayListMazeGrid(width, height, MazeTile.TileType.WALL)
+    fun generateAldousBroderMaze(width: Int, height: Int): MazeGrid {
+        val grid = MazeGrid(width, height, MazeTile.TileType.WALL)
 
         writeImage(grid.toImage())
 
@@ -273,7 +273,7 @@ class MazeGenerator {
         return grid
     }
 
-    private fun aldousBroderGeneration(grid: ArrayListMazeGrid) {
+    private fun aldousBroderGeneration(grid: MazeGrid) {
 
         var cell = grid.cellBoard.random()
 
@@ -293,8 +293,8 @@ class MazeGenerator {
 
     }
 
-    fun generateWilsonMaze(width: Int, height: Int): ArrayListMazeGrid {
-        val grid = ArrayListMazeGrid(width, height, MazeTile.TileType.WALL)
+    fun generateWilsonMaze(width: Int, height: Int): MazeGrid {
+        val grid = MazeGrid(width, height, MazeTile.TileType.WALL)
 
         wilsonFullRandomGeneration(grid)
 
@@ -302,7 +302,7 @@ class MazeGenerator {
         return grid
     }
 
-    private fun wilsonFullRandomGeneration(grid: ArrayListMazeGrid) {
+    private fun wilsonFullRandomGeneration(grid: MazeGrid) {
         grid.cellBoard.random().centerTile.type = MazeTile.TileType.CORRIDOR
 
         while (grid.cellBoard.any { it.centerTile.type != MazeTile.TileType.CORRIDOR }) {

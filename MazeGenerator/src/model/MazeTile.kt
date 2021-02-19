@@ -9,7 +9,7 @@ import javafx.scene.paint.Color
  * Tile are the smallest component of the maze board. It can either be a corridor or a wall.
  * Any MazeCell is composed of several MazeTile
  */
-abstract class MazeTile(val positionX: Int, val positionY: Int) {
+class MazeTile(val positionX: Int, val positionY: Int, private val parentGrid: MazeGrid) {
 
     companion object {
         const val width: Int = 20
@@ -31,7 +31,35 @@ abstract class MazeTile(val positionX: Int, val positionY: Int) {
     var rightCell: MazeCell? = null
     var currentCell: MazeCell? = null
 
-    abstract fun getAdjacentTiles(): List<MazeTile>
+    private fun getTopNeighbour(): MazeTile? = parentGrid[positionX, positionY - 1]
+
+    private fun getBottomNeighbour(): MazeTile? = parentGrid[positionX, positionY + 1]
+
+    private fun getLeftNeighbour(): MazeTile? = parentGrid[positionX - 1, positionY]
+
+    private fun getRightNeighbour(): MazeTile? = parentGrid[positionX + 1, positionY]
+
+    fun getAdjacentTiles(): List<MazeTile> {
+        val neighbours = ArrayList<MazeTile>()
+
+        getTopNeighbour()?.let {
+            neighbours.add(it)
+        }
+
+        getBottomNeighbour()?.let {
+            neighbours.add(it)
+        }
+
+        getLeftNeighbour()?.let {
+            neighbours.add(it)
+        }
+
+        getRightNeighbour()?.let {
+            neighbours.add(it)
+        }
+
+        return neighbours
+    }
 
     fun getSpecificAdjacentTiles(type: TileType) = getAdjacentTiles().filter { cell -> cell.type == type }
 
