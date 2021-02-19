@@ -293,4 +293,70 @@ class MazeGenerator {
 
     }
 
+    fun generateWilsonMaze(width: Int, height: Int): ArrayListMazeGrid {
+        val grid = ArrayListMazeGrid(width, height, MazeTile.TileType.WALL)
+
+        wilsonFullRandomGeneration(grid)
+
+        grid.defineStartAndFinish()
+        return grid
+    }
+
+    private fun wilsonFullRandomGeneration(grid: ArrayListMazeGrid) {
+        grid.cellBoard.random().centerTile.type = MazeTile.TileType.CORRIDOR
+
+        while (grid.cellBoard.any { it.centerTile.type != MazeTile.TileType.CORRIDOR }) {
+
+            val candidatesList = ArrayList<MazeCell>()
+
+             var cell = grid.cellBoard.filter { it.centerTile.type != MazeTile.TileType.CORRIDOR }.random()
+
+            cell.centerTile.type = MazeTile.TileType.CANDIDATE
+            candidatesList.add(cell)
+
+            while (!candidatesList.isEmpty()) {
+                writeImage(grid.toImage())
+
+                // Randomly define next cell
+                val nextCell = cell.getAdjacentCells().random()
+
+                when (nextCell.centerTile.type) {
+
+                    // If it is maze cell, we validate the whole candidates list
+                    MazeTile.TileType.CORRIDOR -> {
+                        cell.removeWallWithCell(nextCell)
+                        nextCell.centerTile.type = MazeTile.TileType.CORRIDOR
+
+                        cell = nextCell
+                        while (!candidatesList.isEmpty()) {
+                            cell.removeWallWithCell(candidatesList[candidatesList.size - 1])
+                            cell = candidatesList[candidatesList.size - 1]
+                            cell.centerTile.type = MazeTile.TileType.CORRIDOR
+                            candidatesList.removeAt(candidatesList.size - 1)
+                        }
+                    }
+
+                    // If it is candidate cell, we restart the loop from here
+                    MazeTile.TileType.CANDIDATE -> {
+                        val index = candidatesList.indexOf(nextCell)
+                        while (candidatesList.size > index + 1) {
+                            candidatesList[index + 1].centerTile.type = MazeTile.TileType.WALL
+                            candidatesList.removeAt(index + 1)
+                        }
+
+                        cell = nextCell
+                    }
+
+                    // If it is nothing particular, we carry on
+                    else -> {
+                        nextCell.centerTile.type = MazeTile.TileType.CANDIDATE
+                        candidatesList.add(nextCell)
+
+                        cell = nextCell
+                    }
+                }
+            }
+        }
+    }
+
 }

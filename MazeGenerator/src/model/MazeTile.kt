@@ -19,7 +19,7 @@ abstract class MazeTile(val positionX: Int, val positionY: Int) {
     var isVisited = false
 
     enum class TileType {
-        BOARD_CORNER, BOARD_WALL, CORRIDOR, WALL, START, FINISH, UNDEFINED
+        BOARD_CORNER, BOARD_WALL, CORRIDOR, CANDIDATE, WALL, START, FINISH, UNDEFINED
     }
 
     var type: TileType = TileType.UNDEFINED
@@ -40,6 +40,7 @@ abstract class MazeTile(val positionX: Int, val positionY: Int) {
 
         val color = when (type) {
             TileType.CORRIDOR -> Color.WHITE
+            TileType.CANDIDATE -> Color.DARKRED
             TileType.WALL, TileType.BOARD_WALL, TileType.BOARD_CORNER -> Color.BLACK
             TileType.UNDEFINED -> Color.WHITE
             TileType.START -> Color.GREEN
