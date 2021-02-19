@@ -19,7 +19,14 @@ class MazeTile(val positionX: Int, val positionY: Int, private val parentGrid: M
     var isVisited = false
 
     enum class TileType {
-        BOARD_CORNER, BOARD_WALL, CORRIDOR, CANDIDATE, WALL, START, FINISH, UNDEFINED
+        // MazeGrid specific
+        BOARD_CORNER, BOARD_WALL,
+        // Generator specific
+        CANDIDATE, UNDEFINED,
+        // PathFinder specific
+        BACKTRACKED, SEARCHED, VALIDATED,
+        // Other
+        CORRIDOR, WALL, START, FINISH
     }
 
     var type: TileType = TileType.UNDEFINED
@@ -31,13 +38,13 @@ class MazeTile(val positionX: Int, val positionY: Int, private val parentGrid: M
     var rightCell: MazeCell? = null
     var currentCell: MazeCell? = null
 
-    private fun getTopNeighbour(): MazeTile? = parentGrid[positionX, positionY - 1]
+    fun getTopNeighbour(): MazeTile? = parentGrid[positionX, positionY - 1]
 
-    private fun getBottomNeighbour(): MazeTile? = parentGrid[positionX, positionY + 1]
+    fun getBottomNeighbour(): MazeTile? = parentGrid[positionX, positionY + 1]
 
-    private fun getLeftNeighbour(): MazeTile? = parentGrid[positionX - 1, positionY]
+    fun getLeftNeighbour(): MazeTile? = parentGrid[positionX - 1, positionY]
 
-    private fun getRightNeighbour(): MazeTile? = parentGrid[positionX + 1, positionY]
+    fun getRightNeighbour(): MazeTile? = parentGrid[positionX + 1, positionY]
 
     fun getAdjacentTiles(): List<MazeTile> {
         val neighbours = ArrayList<MazeTile>()
@@ -68,11 +75,14 @@ class MazeTile(val positionX: Int, val positionY: Int, private val parentGrid: M
 
         val color = when (type) {
             TileType.CORRIDOR -> Color.WHITE
-            TileType.CANDIDATE -> Color.DARKRED
             TileType.WALL, TileType.BOARD_WALL, TileType.BOARD_CORNER -> Color.BLACK
+            TileType.CANDIDATE -> Color.DARKRED
             TileType.UNDEFINED -> Color.WHITE
             TileType.START -> Color.GREEN
             TileType.FINISH -> Color.RED
+            TileType.SEARCHED -> Color.GREENYELLOW
+            TileType.BACKTRACKED -> Color.CYAN
+            TileType.VALIDATED -> Color.BLUE
         }
 
         writableImg.fillUpWithColor(color)

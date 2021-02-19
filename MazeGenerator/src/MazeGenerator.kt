@@ -40,10 +40,7 @@ class MazeGenerator {
     fun generateDepthFirstMaze(width: Int, height: Int): MazeGrid {
         val grid = MazeGrid(width, height, MazeTile.TileType.WALL)
 
-        writeImage(grid.toImage())
-
         recursiveDepthFirst(grid.cellBoard.first())
-        grid.defineStartAndFinish()
 
         return grid
     }
@@ -51,7 +48,7 @@ class MazeGenerator {
     private fun recursiveDepthFirst(cell: MazeCell) {
         cell.centerTile.type = MazeTile.TileType.CORRIDOR
 
-        writeImage(cell.grid.toImage())
+        //writeImage(cell.grid.toImage())
 
         while (cell.getAdjacentCells().any { it.centerTile.type == MazeTile.TileType.WALL }) {
             val unvisitedCell = cell.getAdjacentCells().filter { it.centerTile.type == MazeTile.TileType.WALL }
@@ -64,11 +61,9 @@ class MazeGenerator {
     }
 
     fun generateByRecursiveDivisionMaze(width: Int, height: Int): MazeGrid {
-
         val grid = MazeGrid(width, height)
 
         recursiveDivision(grid, 1, 1, width, height)
-        grid.defineStartAndFinish()
 
         return grid
     }
@@ -169,7 +164,6 @@ class MazeGenerator {
         val grid = MazeGrid(width, height, MazeTile.TileType.WALL)
 
         primsGeneration(grid)
-        grid.defineStartAndFinish()
 
         return grid
     }
@@ -185,7 +179,7 @@ class MazeGenerator {
             randomCell.centerTile.getSpecificAdjacentTiles(MazeTile.TileType.WALL)
                 .forEach { wallStack.add(Pair(it, randomCell)) }
 
-            writeImage(grid.toImage())
+            //writeImage(grid.toImage())
         }
 
         while (!wallStack.isEmpty()) {
@@ -213,7 +207,7 @@ class MazeGenerator {
                         wallStack.add(Pair(it, cell))
                     }
 
-                    writeImage(grid.toImage())
+                    //writeImage(grid.toImage())
                 }
             }
 
@@ -265,11 +259,8 @@ class MazeGenerator {
     fun generateAldousBroderMaze(width: Int, height: Int): MazeGrid {
         val grid = MazeGrid(width, height, MazeTile.TileType.WALL)
 
-        writeImage(grid.toImage())
-
         aldousBroderGeneration(grid)
 
-        grid.defineStartAndFinish()
         return grid
     }
 
@@ -285,7 +276,7 @@ class MazeGenerator {
 
             if (nextCell.centerTile.type != MazeTile.TileType.CORRIDOR) {
                 cell.removeWallWithCell(nextCell)
-                writeImage(grid.toImage())
+                //writeImage(grid.toImage())
             }
 
             cell = nextCell
@@ -298,7 +289,6 @@ class MazeGenerator {
 
         wilsonFullRandomGeneration(grid)
 
-        grid.defineStartAndFinish()
         return grid
     }
 
