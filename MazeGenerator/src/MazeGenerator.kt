@@ -45,7 +45,10 @@ class MazeGenerator {
 
         val grid = ArrayListMazeGrid(width, height)
 
+        writeImage(grid.toImage())
+
         recursiveDivision(grid, 1, 1, width, height)
+        grid.defineStartAndFinish()
 
         writeImage(grid.toImage())
     }
@@ -55,6 +58,9 @@ class MazeGenerator {
         if (height == 0 || width == 0) {
             return
         }
+
+        var firstSubdivision = {}
+        var secondSubdivision = {}
 
         val endX = startX + width - 1
         val endY = startY + height - 1
@@ -79,8 +85,6 @@ class MazeGenerator {
                 return
             }
 
-            writeImage(grid.toImage())
-
             // Define random Y coordinate for the wall. Make sure it is even.
             val wallY = (startY..endY).toList().filter { it % 2 == 0 }.random()
 
@@ -95,12 +99,14 @@ class MazeGenerator {
             // Dig a hole in this wall
             grid[holeX, wallY]?.type = MazeCell.CellType.CORRIDOR
 
+            writeImage(grid.toImage())
+
             // Repeat for the 2 new subdivisions
             // Top subdivision
-            recursiveDivision(grid, startX, startY, width, wallY - startY)
+            firstSubdivision = { recursiveDivision(grid, startX, startY, width, wallY - startY) }
 
             // Bottom subdivision
-            recursiveDivision(grid, startX, wallY + 1, width, endY - wallY)
+            secondSubdivision = { recursiveDivision(grid, startX, wallY + 1, width, endY - wallY) }
 
         } else {
 
@@ -108,8 +114,6 @@ class MazeGenerator {
             if (width < 3) {
                 return
             }
-
-            writeImage(grid.toImage())
 
             // Define random X coordinate for the wall. Make sure it is even.
             val wallX = (startX..endX).toList().filter { it % 2 == 0 }.random()
@@ -125,12 +129,23 @@ class MazeGenerator {
             // Dig a hole in this wall
             grid[wallX, holeY]?.type = MazeCell.CellType.CORRIDOR
 
+            writeImage(grid.toImage())
+
             // Repeat for the 2 new subdivisions
             // Left subdivision
-            recursiveDivision(grid, startX, startY, wallX - startX, height)
+            firstSubdivision = { recursiveDivision(grid, startX, startY, wallX - startX, height) }
 
             // Right subdivision
-            recursiveDivision(grid, wallX + 1, startY, endX - wallX, height)
+            secondSubdivision = { recursiveDivision(grid, wallX + 1, startY, endX - wallX, height) }
+        }
+
+        // Randomly choose between the 2 next subdivision the first to start with
+        if (Random.nextBoolean()) {
+            firstSubdivision()
+            secondSubdivision()
+        } else {
+            secondSubdivision()
+            firstSubdivision()
         }
     }
 

@@ -12,7 +12,6 @@ import kotlin.random.Random
 
 fun main() {
     MazeGenerator().generateByRecursiveDivision(51, 51)
-
 }
 
 

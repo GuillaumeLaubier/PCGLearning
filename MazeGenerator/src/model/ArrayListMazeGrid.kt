@@ -10,7 +10,7 @@ class ArrayListMazeGrid(val mazeWidth: Int, val mazeHeight: Int) {
     val boardHeight = mazeHeight + 2
 
     val board by lazy {
-            val board = ArrayList<MazeCell>()
+        val board = ArrayList<MazeCell>()
 
         for (x in 0..(boardWidth - 1)) {
 
@@ -21,7 +21,8 @@ class ArrayListMazeGrid(val mazeWidth: Int, val mazeHeight: Int) {
                 if (x == 0 && y == 0
                     || x == 0 && y == boardHeight - 1
                     || x == boardWidth - 1 && y == 0
-                    || x == boardWidth - 1 && y == boardHeight - 1) {
+                    || x == boardWidth - 1 && y == boardHeight - 1
+                ) {
                     cell.type = MazeCell.CellType.BOARD_CORNER
                 } else if (x == 0 || x == boardWidth - 1 || y == 0 || y == boardHeight - 1) {
                     cell.type = MazeCell.CellType.BOARD_WALL
@@ -31,14 +32,27 @@ class ArrayListMazeGrid(val mazeWidth: Int, val mazeHeight: Int) {
             }
         }
 
-        // Once initialized, define random start and end within board_wall cells
-        board.filter { it.type == MazeCell.CellType.BOARD_WALL }.random().type = MazeCell.CellType.START
-        board.filter { it.type == MazeCell.CellType.BOARD_WALL }.random().type = MazeCell.CellType.END
-
         board
     }
 
     operator fun get(x: Int, y: Int): MazeCell? = board.firstOrNull { it.positionX == x && it.positionY == y }
+
+    fun defineStartAndFinish() {
+        // Once initialized, define random start and end within board_wall cells
+        board.filter {
+            it.type == MazeCell.CellType.BOARD_WALL
+                    && it.getNeighbours().any { neighbour ->
+                neighbour.type == MazeCell.CellType.CORRIDOR
+            }
+        }.random().type = MazeCell.CellType.START
+
+        board.filter {
+            it.type == MazeCell.CellType.BOARD_WALL
+                    && it.getNeighbours().any { neighbour ->
+                neighbour.type == MazeCell.CellType.CORRIDOR
+            }
+        }.random().type = MazeCell.CellType.FINISH
+    }
 
     fun toImage(): Image {
         val writableImg = WritableImage(boardWidth * MazeCell.width, boardHeight * MazeCell.height)

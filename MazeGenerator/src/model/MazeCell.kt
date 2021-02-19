@@ -15,7 +15,7 @@ abstract class MazeCell(val positionX: Int, val positionY: Int) {
     var isVisited = false
 
     enum class CellType {
-        BOARD_CORNER, BOARD_WALL, CORRIDOR, WALL, START, END, UNDEFINED
+        BOARD_CORNER, BOARD_WALL, CORRIDOR, WALL, START, FINISH, UNDEFINED
     }
 
     var type: CellType = CellType.UNDEFINED
@@ -32,7 +32,7 @@ abstract class MazeCell(val positionX: Int, val positionY: Int) {
             CellType.WALL, CellType.BOARD_WALL, CellType.BOARD_CORNER -> Color.BLACK
             CellType.UNDEFINED -> Color.WHITE
             CellType.START -> Color.GREEN
-            CellType.END -> Color.RED
+            CellType.FINISH -> Color.RED
         }
 
         writableImg.fillUpWithColor(color)
