@@ -37,6 +37,22 @@ class ArrayListMazeGrid(val mazeWidth: Int, val mazeHeight: Int, initialType: Ma
         board
     }
 
+    val cellBoard by lazy {
+        val cellBoard = ArrayList<MazeCell>()
+
+        for (x in 1..(boardWidth - 1) step 2) {
+            for (y in 1..(boardHeight - 1) step 2) {
+                this[x, y]?.let {
+                    if (it.type != MazeTile.TileType.BOARD_CORNER && it.type != MazeTile.TileType.BOARD_WALL) {
+                        cellBoard.add(MazeCell(it, this))
+                    }
+                }
+            }
+        }
+
+        cellBoard
+    }
+
     operator fun get(x: Int, y: Int): MazeTile? = board.firstOrNull { it.positionX == x && it.positionY == y }
 
     fun defineStartAndFinish(isRandom: Boolean = true) {

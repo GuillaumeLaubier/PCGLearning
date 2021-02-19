@@ -29,6 +29,7 @@ abstract class MazeTile(val positionX: Int, val positionY: Int) {
     var bottomCell: MazeCell? = null
     var leftCell: MazeCell? = null
     var rightCell: MazeCell? = null
+    var currentCell: MazeCell? = null
 
     abstract fun getAdjacentTiles(): List<MazeTile>
 

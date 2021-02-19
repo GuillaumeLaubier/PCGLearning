@@ -16,5 +16,6 @@ class MazeCell(val centerTile: MazeTile, grid: ArrayListMazeGrid) {
         bottomTile?.topCell = this
         leftTile?.rightCell = this
         rightTile?.leftCell = this
+        centerTile.currentCell = this
     }
 }

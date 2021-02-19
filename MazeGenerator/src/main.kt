@@ -11,7 +11,7 @@ import javax.imageio.ImageIO
 import kotlin.random.Random
 
 fun main() {
-    val grid = MazeGenerator().generatePrimsMaze(50, 50)
+    val grid = MazeGenerator().generatePrimsMaze(51, 51)
     writeImage(grid.toImage())
 }
 

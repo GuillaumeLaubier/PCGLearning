@@ -1,8 +1,5 @@
 import javafx.scene.image.Image
-import model.ArrayListMazeGrid
-import model.FirstTestMazeCell
-import model.FirstTestMazeGrid
-import model.MazeTile
+import model.*
 import kotlin.random.Random
 
 class MazeGenerator {
@@ -146,19 +143,21 @@ class MazeGenerator {
         val grid = ArrayListMazeGrid(width, height, MazeTile.TileType.WALL)
 
         primsGeneration(grid)
+        grid.defineStartAndFinish()
 
         return grid
     }
 
     // Might be useful later for pathfinding
-    private fun primsGeneration(grid: ArrayListMazeGrid, wallStack: ArrayList<Pair<MazeTile, MazeTile>> = ArrayList()) {
+    private fun primsGeneration(grid: ArrayListMazeGrid, wallStack: ArrayList<Pair<MazeTile, MazeCell>> = ArrayList()) {
         if (!grid.board.any { it.type == MazeTile.TileType.CORRIDOR }) {
             // This is the first iteration
 
-            val randomTile = grid.board.filter { it.type == MazeTile.TileType.WALL }.random()
-            randomTile.type = MazeTile.TileType.CORRIDOR
+            val randomCell = grid.cellBoard.filter { it.centerTile.type == MazeTile.TileType.WALL }.random()
+            randomCell.centerTile.type = MazeTile.TileType.CORRIDOR
 
-            randomTile.getSpecificAdjacentTiles(MazeTile.TileType.WALL).forEach { wallStack.add(Pair(it, randomTile)) }
+            randomCell.centerTile.getSpecificAdjacentTiles(MazeTile.TileType.WALL).forEach { wallStack.add(Pair(it, randomCell)) }
+
             writeImage(grid.toImage())
         }
 
@@ -169,19 +168,26 @@ class MazeGenerator {
             val tile = randomPair.first
 
             // Retrieving the calling corridor
-            val callingCorridor = randomPair.second
+            val callingCell = randomPair.second
 
-            // Retrieve opposite of corridor from randomTile POV
-            val otherSide = grid[
-                    tile.positionX + (tile.positionX - callingCorridor.positionX),
-                    tile.positionY + (tile.positionY - callingCorridor.positionY)
-            ]
+            val oppositeCell = when (callingCell) {
+                tile.topCell -> tile.bottomCell
+                tile.bottomCell -> tile.topCell
+                tile.leftCell -> tile.rightCell
+                tile.rightCell -> tile.leftCell
+                else -> null
+            }
 
-            if (otherSide?.type != MazeTile.TileType.CORRIDOR) {
-                tile.type = MazeTile.TileType.CORRIDOR
-                tile.getSpecificAdjacentTiles(MazeTile.TileType.WALL).forEach { wallStack.add(Pair(it, tile)) }
+            oppositeCell?.let { cell ->
+                if (cell.centerTile.type != MazeTile.TileType.CORRIDOR) {
+                    tile.type = MazeTile.TileType.CORRIDOR
+                    cell.centerTile.type = MazeTile.TileType.CORRIDOR
+                    cell.centerTile.getSpecificAdjacentTiles(MazeTile.TileType.WALL).forEach {
+                        wallStack.add(Pair(it, cell))
+                    }
 
-                writeImage(grid.toImage())
+                    writeImage(grid.toImage())
+                }
             }
 
             wallStack.remove(randomPair)
@@ -197,7 +203,7 @@ class MazeGenerator {
             randomTile.type = MazeTile.TileType.CORRIDOR
 
             randomTile.getSpecificAdjacentTiles(MazeTile.TileType.WALL).forEach { wallStack.add(Pair(it, randomTile)) }
-            writeImage(grid.toImage())
+            //writeImage(grid.toImage())
         }
 
         while (!wallStack.isEmpty()) {
