@@ -37,7 +37,7 @@ class MazeGenerator {
         }
     }
 
-    fun generateDepthFirst(width: Int, height: Int): ArrayListMazeGrid {
+    fun generateDepthFirstMaze(width: Int, height: Int): ArrayListMazeGrid {
         val grid = ArrayListMazeGrid(width, height, MazeTile.TileType.WALL)
 
         writeImage(grid.toImage())
@@ -55,30 +55,15 @@ class MazeGenerator {
 
         while (cell.getAdjacentCells().any { it.centerTile.type == MazeTile.TileType.WALL }) {
             val unvisitedCell = cell.getAdjacentCells().filter { it.centerTile.type == MazeTile.TileType.WALL }
-
             val randomIndex = (Random.nextFloat() * unvisitedCell.size).toInt()
-
             val nextCell = unvisitedCell[randomIndex]
 
-            if (cell.centerTile.positionX == nextCell.centerTile.positionX) {
-                if (cell.centerTile.positionY < nextCell.centerTile.positionY) {
-                    cell.bottomTile?.type = MazeTile.TileType.CORRIDOR
-                } else {
-                    cell.topTile?.type = MazeTile.TileType.CORRIDOR
-                }
-            } else {
-                if (cell.centerTile.positionX < nextCell.centerTile.positionX) {
-                    cell.rightTile?.type = MazeTile.TileType.CORRIDOR
-                } else {
-                    cell.leftTile?.type = MazeTile.TileType.CORRIDOR
-                }
-            }
-
+            cell.removeWallWithCell(nextCell)
             recursiveDepthFirst(nextCell)
         }
     }
 
-    fun generateByRecursiveDivision(width: Int, height: Int): ArrayListMazeGrid {
+    fun generateByRecursiveDivisionMaze(width: Int, height: Int): ArrayListMazeGrid {
 
         val grid = ArrayListMazeGrid(width, height)
 
@@ -275,6 +260,37 @@ class MazeGenerator {
 
             wallStack.remove(randomPair)
         }
+    }
+
+    fun generateAldousBroderMaze(width: Int, height: Int): ArrayListMazeGrid {
+        val grid = ArrayListMazeGrid(width, height, MazeTile.TileType.WALL)
+
+        writeImage(grid.toImage())
+
+        aldousBroderGeneration(grid)
+
+        grid.defineStartAndFinish()
+        return grid
+    }
+
+    private fun aldousBroderGeneration(grid: ArrayListMazeGrid) {
+
+        var cell = grid.cellBoard.random()
+
+        while (grid.cellBoard.any { it.centerTile.type != MazeTile.TileType.CORRIDOR }) {
+
+            cell.centerTile.type = MazeTile.TileType.CORRIDOR
+
+            val nextCell = cell.getAdjacentCells().random()
+
+            if (nextCell.centerTile.type != MazeTile.TileType.CORRIDOR) {
+                cell.removeWallWithCell(nextCell)
+                writeImage(grid.toImage())
+            }
+
+            cell = nextCell
+        }
+
     }
 
 }

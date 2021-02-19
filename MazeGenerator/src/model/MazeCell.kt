@@ -40,4 +40,21 @@ class MazeCell(val centerTile: MazeTile, val grid: ArrayListMazeGrid) {
 
         return list
     }
+
+    // Other cell must be adjacent!
+    fun removeWallWithCell(otherCell: MazeCell) {
+        if (centerTile.positionX == otherCell.centerTile.positionX) {
+            if (centerTile.positionY < otherCell.centerTile.positionY) {
+                bottomTile?.type = MazeTile.TileType.CORRIDOR
+            } else {
+                topTile?.type = MazeTile.TileType.CORRIDOR
+            }
+        } else {
+            if (centerTile.positionX < otherCell.centerTile.positionX) {
+                rightTile?.type = MazeTile.TileType.CORRIDOR
+            } else {
+                leftTile?.type = MazeTile.TileType.CORRIDOR
+            }
+        }
+    }
 }
