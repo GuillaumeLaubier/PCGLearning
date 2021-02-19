@@ -18,12 +18,12 @@ class MazeGenerator {
     fun generateFirstTestMaze(width: Int, height: Int): Image {
         val grid = FirstTestMazeGrid(15, 15)
 
-        recursiveDepthFirst(grid[0, 0])
+        firstTryRecursiveDepthFirst(grid[0, 0])
 
         return grid.getImage()
     }
 
-    private fun recursiveDepthFirst(currentCell: FirstTestMazeCell) {
+    private fun firstTryRecursiveDepthFirst(currentCell: FirstTestMazeCell) {
         currentCell.isVisited = true
 
         while (currentCell.getUnvisitedNeighbour().size > 0) {
@@ -36,21 +36,23 @@ class MazeGenerator {
             val nextCell = currentCell.getUnvisitedNeighbour()[randomIndex]
             currentCell.removeWallWith(nextCell)
 
-            recursiveDepthFirst(nextCell)
+            firstTryRecursiveDepthFirst(nextCell)
         }
     }
 
+    //fun generateByRecursiveDepthFirst(width: Int, height: Int): ArrayListMazeGrid {
+    //    val grid = ArrayListMazeGrid(width, height)
+    //}
 
-    fun generateByRecursiveDivision(width: Int, height: Int) {
+
+    fun generateByRecursiveDivision(width: Int, height: Int): ArrayListMazeGrid {
 
         val grid = ArrayListMazeGrid(width, height)
-
-        writeImage(grid.toImage())
 
         recursiveDivision(grid, 1, 1, width, height)
         grid.defineStartAndFinish()
 
-        writeImage(grid.toImage())
+        return grid
     }
 
     private fun recursiveDivision(grid: ArrayListMazeGrid, startX: Int, startY: Int, width: Int, height: Int) {
@@ -99,8 +101,6 @@ class MazeGenerator {
             // Dig a hole in this wall
             grid[holeX, wallY]?.type = MazeCell.CellType.CORRIDOR
 
-            writeImage(grid.toImage())
-
             // Repeat for the 2 new subdivisions
             // Top subdivision
             firstSubdivision = { recursiveDivision(grid, startX, startY, width, wallY - startY) }
@@ -128,8 +128,6 @@ class MazeGenerator {
 
             // Dig a hole in this wall
             grid[wallX, holeY]?.type = MazeCell.CellType.CORRIDOR
-
-            writeImage(grid.toImage())
 
             // Repeat for the 2 new subdivisions
             // Left subdivision

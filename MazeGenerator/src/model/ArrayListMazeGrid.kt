@@ -37,8 +37,15 @@ class ArrayListMazeGrid(val mazeWidth: Int, val mazeHeight: Int) {
 
     operator fun get(x: Int, y: Int): MazeCell? = board.firstOrNull { it.positionX == x && it.positionY == y }
 
-    fun defineStartAndFinish() {
-        // Once initialized, define random start and end within board_wall cells
+    fun defineStartAndFinish(isRandom: Boolean = true) {
+        if (isRandom) {
+            defineRandomStartAndFinish()
+        } else {
+            defineClassicStartAndFinish()
+        }
+    }
+
+    private fun defineRandomStartAndFinish() {
         board.filter {
             it.type == MazeCell.CellType.BOARD_WALL
                     && it.getNeighbours().any { neighbour ->
@@ -52,6 +59,11 @@ class ArrayListMazeGrid(val mazeWidth: Int, val mazeHeight: Int) {
                 neighbour.type == MazeCell.CellType.CORRIDOR
             }
         }.random().type = MazeCell.CellType.FINISH
+    }
+
+    private fun defineClassicStartAndFinish() {
+        this[1, 0]?.type = MazeCell.CellType.START
+        this[mazeWidth, boardHeight - 1]?.type = MazeCell.CellType.FINISH
     }
 
     fun toImage(): Image {
