@@ -2,7 +2,7 @@ import javafx.scene.image.Image
 import model.ArrayListMazeGrid
 import model.FirstTestMazeCell
 import model.FirstTestMazeGrid
-import model.MazeCell
+import model.MazeTile
 import kotlin.random.Random
 
 class MazeGenerator {
@@ -95,11 +95,11 @@ class MazeGenerator {
 
             // Define horizontal wall
             grid.board.filter { it.positionY == wallY && it.positionX in startX..endX }.forEach {
-                it.type = MazeCell.CellType.WALL
+                it.type = MazeTile.CellType.WALL
             }
 
             // Dig a hole in this wall
-            grid[holeX, wallY]?.type = MazeCell.CellType.CORRIDOR
+            grid[holeX, wallY]?.type = MazeTile.CellType.CORRIDOR
 
             // Repeat for the 2 new subdivisions
             // Top subdivision
@@ -123,11 +123,11 @@ class MazeGenerator {
 
             // Define vertical wall
             grid.board.filter { it.positionX == wallX && it.positionY in startY..endY }.forEach {
-                it.type = MazeCell.CellType.WALL
+                it.type = MazeTile.CellType.WALL
             }
 
             // Dig a hole in this wall
-            grid[wallX, holeY]?.type = MazeCell.CellType.CORRIDOR
+            grid[wallX, holeY]?.type = MazeTile.CellType.CORRIDOR
 
             // Repeat for the 2 new subdivisions
             // Left subdivision

@@ -5,7 +5,7 @@ import javafx.scene.image.Image
 import javafx.scene.image.WritableImage
 import javafx.scene.paint.Color
 
-abstract class MazeCell(val positionX: Int, val positionY: Int) {
+abstract class MazeTile(val positionX: Int, val positionY: Int) {
 
     companion object {
         const val width: Int = 20
@@ -20,7 +20,7 @@ abstract class MazeCell(val positionX: Int, val positionY: Int) {
 
     var type: CellType = CellType.UNDEFINED
 
-    abstract fun getNeighbours(): List<MazeCell>
+    abstract fun getNeighbours(): List<MazeTile>
 
     fun getUndefinedNeighbours() = getNeighbours().filter { cell -> cell.type != CellType.UNDEFINED }
 
