@@ -14,25 +14,25 @@ abstract class MazeTile(val positionX: Int, val positionY: Int) {
 
     var isVisited = false
 
-    enum class CellType {
+    enum class TileType {
         BOARD_CORNER, BOARD_WALL, CORRIDOR, WALL, START, FINISH, UNDEFINED
     }
 
-    var type: CellType = CellType.UNDEFINED
+    var type: TileType = TileType.UNDEFINED
 
     abstract fun getNeighbours(): List<MazeTile>
 
-    fun getUndefinedNeighbours() = getNeighbours().filter { cell -> cell.type != CellType.UNDEFINED }
+    fun getSpecificNeighbours(type: TileType) = getNeighbours().filter { cell -> cell.type == type }
 
     fun toImage(): Image {
         val writableImg = WritableImage(width, height)
 
         val color = when (type) {
-            CellType.CORRIDOR -> Color.WHITE
-            CellType.WALL, CellType.BOARD_WALL, CellType.BOARD_CORNER -> Color.BLACK
-            CellType.UNDEFINED -> Color.WHITE
-            CellType.START -> Color.GREEN
-            CellType.FINISH -> Color.RED
+            TileType.CORRIDOR -> Color.WHITE
+            TileType.WALL, TileType.BOARD_WALL, TileType.BOARD_CORNER -> Color.BLACK
+            TileType.UNDEFINED -> Color.WHITE
+            TileType.START -> Color.GREEN
+            TileType.FINISH -> Color.RED
         }
 
         writableImg.fillUpWithColor(color)

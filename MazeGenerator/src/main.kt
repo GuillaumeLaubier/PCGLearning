@@ -11,9 +11,7 @@ import javax.imageio.ImageIO
 import kotlin.random.Random
 
 fun main() {
-    //MazeGenerator().generateByRecursiveDivision(51, 51)
-    val grid = ArrayListMazeGrid(20, 20)
-    grid.defineStartAndFinish(false)
+    val grid = MazeGenerator().generatePrimsMaze(50, 50)
     writeImage(grid.toImage())
 }
 

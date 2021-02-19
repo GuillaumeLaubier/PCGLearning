@@ -3,7 +3,7 @@ package model
 import javafx.scene.image.Image
 import javafx.scene.image.WritableImage
 
-class ArrayListMazeGrid(val mazeWidth: Int, val mazeHeight: Int) {
+class ArrayListMazeGrid(val mazeWidth: Int, val mazeHeight: Int, initialType: MazeTile.TileType = MazeTile.TileType.UNDEFINED) {
 
     // 2 extras cells for board walls
     val boardWidth = mazeWidth + 2
@@ -23,9 +23,11 @@ class ArrayListMazeGrid(val mazeWidth: Int, val mazeHeight: Int) {
                     || x == boardWidth - 1 && y == 0
                     || x == boardWidth - 1 && y == boardHeight - 1
                 ) {
-                    cell.type = MazeTile.CellType.BOARD_CORNER
+                    cell.type = MazeTile.TileType.BOARD_CORNER
                 } else if (x == 0 || x == boardWidth - 1 || y == 0 || y == boardHeight - 1) {
-                    cell.type = MazeTile.CellType.BOARD_WALL
+                    cell.type = MazeTile.TileType.BOARD_WALL
+                } else {
+                    cell.type = initialType
                 }
 
                 board.add(cell)
@@ -47,23 +49,23 @@ class ArrayListMazeGrid(val mazeWidth: Int, val mazeHeight: Int) {
 
     private fun defineRandomStartAndFinish() {
         board.filter {
-            it.type == MazeTile.CellType.BOARD_WALL
+            it.type == MazeTile.TileType.BOARD_WALL
                     && it.getNeighbours().any { neighbour ->
-                neighbour.type == MazeTile.CellType.CORRIDOR
+                neighbour.type == MazeTile.TileType.CORRIDOR
             }
-        }.random().type = MazeTile.CellType.START
+        }.random().type = MazeTile.TileType.START
 
         board.filter {
-            it.type == MazeTile.CellType.BOARD_WALL
+            it.type == MazeTile.TileType.BOARD_WALL
                     && it.getNeighbours().any { neighbour ->
-                neighbour.type == MazeTile.CellType.CORRIDOR
+                neighbour.type == MazeTile.TileType.CORRIDOR
             }
-        }.random().type = MazeTile.CellType.FINISH
+        }.random().type = MazeTile.TileType.FINISH
     }
 
     private fun defineClassicStartAndFinish() {
-        this[1, 0]?.type = MazeTile.CellType.START
-        this[mazeWidth, boardHeight - 1]?.type = MazeTile.CellType.FINISH
+        this[1, 0]?.type = MazeTile.TileType.START
+        this[mazeWidth, boardHeight - 1]?.type = MazeTile.TileType.FINISH
     }
 
     fun toImage(): Image {

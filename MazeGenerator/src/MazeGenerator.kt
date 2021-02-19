@@ -40,11 +40,6 @@ class MazeGenerator {
         }
     }
 
-    //fun generateByRecursiveDepthFirst(width: Int, height: Int): ArrayListMazeGrid {
-    //    val grid = ArrayListMazeGrid(width, height)
-    //}
-
-
     fun generateByRecursiveDivision(width: Int, height: Int): ArrayListMazeGrid {
 
         val grid = ArrayListMazeGrid(width, height)
@@ -95,11 +90,11 @@ class MazeGenerator {
 
             // Define horizontal wall
             grid.board.filter { it.positionY == wallY && it.positionX in startX..endX }.forEach {
-                it.type = MazeTile.CellType.WALL
+                it.type = MazeTile.TileType.WALL
             }
 
             // Dig a hole in this wall
-            grid[holeX, wallY]?.type = MazeTile.CellType.CORRIDOR
+            grid[holeX, wallY]?.type = MazeTile.TileType.CORRIDOR
 
             // Repeat for the 2 new subdivisions
             // Top subdivision
@@ -123,11 +118,11 @@ class MazeGenerator {
 
             // Define vertical wall
             grid.board.filter { it.positionX == wallX && it.positionY in startY..endY }.forEach {
-                it.type = MazeTile.CellType.WALL
+                it.type = MazeTile.TileType.WALL
             }
 
             // Dig a hole in this wall
-            grid[wallX, holeY]?.type = MazeTile.CellType.CORRIDOR
+            grid[wallX, holeY]?.type = MazeTile.TileType.CORRIDOR
 
             // Repeat for the 2 new subdivisions
             // Left subdivision
@@ -144,6 +139,90 @@ class MazeGenerator {
         } else {
             secondSubdivision()
             firstSubdivision()
+        }
+    }
+
+    fun generatePrimsMaze(width: Int, height: Int): ArrayListMazeGrid {
+        val grid = ArrayListMazeGrid(width, height, MazeTile.TileType.WALL)
+
+        primsGeneration(grid)
+
+        return grid
+    }
+
+    // Might be useful later for pathfinding
+    private fun primsGeneration(grid: ArrayListMazeGrid, wallStack: ArrayList<Pair<MazeTile, MazeTile>> = ArrayList()) {
+        if (!grid.board.any { it.type == MazeTile.TileType.CORRIDOR }) {
+            // This is the first iteration
+
+            val randomTile = grid.board.filter { it.type == MazeTile.TileType.WALL }.random()
+            randomTile.type = MazeTile.TileType.CORRIDOR
+
+            randomTile.getSpecificNeighbours(MazeTile.TileType.WALL).forEach { wallStack.add(Pair(it, randomTile)) }
+            writeImage(grid.toImage())
+        }
+
+        while (!wallStack.isEmpty()) {
+            val randomPair = wallStack.random()
+
+            // Possible new corridor
+            val tile = randomPair.first
+
+            // Retrieving the calling corridor
+            val callingCorridor = randomPair.second
+
+            // Retrieve opposite of corridor from randomTile POV
+            val otherSide = grid[
+                    tile.positionX + (tile.positionX - callingCorridor.positionX),
+                    tile.positionY + (tile.positionY - callingCorridor.positionY)
+            ]
+
+            if (otherSide?.type != MazeTile.TileType.CORRIDOR) {
+                tile.type = MazeTile.TileType.CORRIDOR
+                tile.getSpecificNeighbours(MazeTile.TileType.WALL).forEach { wallStack.add(Pair(it, tile)) }
+
+                writeImage(grid.toImage())
+            }
+
+            wallStack.remove(randomPair)
+        }
+    }
+
+    // Might be useful later for pathfinding
+    private fun brokenPrimsGeneration(grid: ArrayListMazeGrid, wallStack: ArrayList<Pair<MazeTile, MazeTile>> = ArrayList()) {
+        if (!grid.board.any { it.type == MazeTile.TileType.CORRIDOR }) {
+            // This is the first iteration
+
+            val randomTile = grid.board.filter { it.type == MazeTile.TileType.WALL }.random()
+            randomTile.type = MazeTile.TileType.CORRIDOR
+
+            randomTile.getSpecificNeighbours(MazeTile.TileType.WALL).forEach { wallStack.add(Pair(it, randomTile)) }
+            writeImage(grid.toImage())
+        }
+
+        while (!wallStack.isEmpty()) {
+            val randomPair = wallStack.random()
+
+            // Possible new corridor
+            val tile = randomPair.first
+
+            // Retrieving the calling corridor
+            val callingCorridor = randomPair.second
+
+            // Retrieve opposite of corridor from randomTile POV
+            val otherSide = grid[
+                    tile.positionX + (tile.positionX - callingCorridor.positionX),
+                    tile.positionY + (tile.positionY - callingCorridor.positionY)
+            ]
+
+            if (otherSide?.type != MazeTile.TileType.CORRIDOR) {
+                tile.type = MazeTile.TileType.CORRIDOR
+                tile.getSpecificNeighbours(MazeTile.TileType.WALL).forEach { wallStack.add(Pair(it, tile)) }
+
+                //writeImage(grid.toImage())
+            }
+
+            wallStack.remove(randomPair)
         }
     }
 
