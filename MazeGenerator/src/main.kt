@@ -10,7 +10,7 @@ import javax.imageio.ImageIO
 
 fun main() {
 
-    val grid = MazeGenerator().generateDepthFirstMaze(51, 51)
+    val grid = MazeGenerator().generateWilsonMaze(51, 51)
     grid.defineStartAndFinish(false)
 
     writeImage(grid.toImage())

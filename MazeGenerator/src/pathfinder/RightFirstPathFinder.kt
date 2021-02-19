@@ -1,6 +1,7 @@
 package pathfinder
 
 import model.MazeTile
+import writeImage
 import kotlin.test.assert
 
 class RightFirstPathFinder : MazePathFinder() {
@@ -12,7 +13,7 @@ class RightFirstPathFinder : MazePathFinder() {
     override fun resolveMaze(startTile: MazeTile) {
         assert(startTile.type == MazeTile.TileType.START)
 
-        recursiveRightFirst(startTile.getSpecificAdjacentTiles(MazeTile.TileType.CORRIDOR).first())
+        recursiveRightFirst(startTile.getAdjacentTiles().first { isSearchable(it) })
     }
 
     /**
@@ -24,10 +25,12 @@ class RightFirstPathFinder : MazePathFinder() {
      */
     private fun recursiveRightFirst(tile: MazeTile): Boolean {
 
+        writeImage(tile.parentGridImage())
+
         val searchingOrder = arrayListOf(Direction.EAST, Direction.SOUTH, Direction.WEST, Direction.NORTH)
 
         when (tile.type) {
-            MazeTile.TileType.CORRIDOR -> {
+            MazeTile.TileType.CORRIDOR, MazeTile.TileType.UNDEFINED -> {
                 tile.type = MazeTile.TileType.SEARCHED
 
                 while (searchingOrder.isNotEmpty()) {
@@ -38,18 +41,29 @@ class RightFirstPathFinder : MazePathFinder() {
                         Direction.NORTH -> tile.getTopNeighbour()
                     }
 
-                    if (nextTile?.type == MazeTile.TileType.CORRIDOR) {
-                        return recursiveRightFirst(nextTile)
-                    } else {
-                        searchingOrder.removeAt(0)
+                    nextTile?.let {
+                        if (isSearchable(it) && recursiveRightFirst(nextTile)) {
+                            tile.type = MazeTile.TileType.VALIDATED
+                            writeImage(it.parentGridImage())
+                            return true
+                        }
                     }
+                    searchingOrder.removeAt(0)
                 }
 
-                return false
             }
 
             MazeTile.TileType.FINISH -> return true
             else -> return false
         }
+
+        tile.type = MazeTile.TileType.BACKTRACKED
+        writeImage(tile.parentGridImage())
+        return false
     }
+
+    private fun isSearchable(tile: MazeTile) =
+        tile.type == MazeTile.TileType.CORRIDOR
+                || tile.type == MazeTile.TileType.FINISH
+                || tile.type == MazeTile.TileType.UNDEFINED
 }

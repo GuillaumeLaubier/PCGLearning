@@ -305,7 +305,7 @@ class MazeGenerator {
             candidatesList.add(cell)
 
             while (!candidatesList.isEmpty()) {
-                writeImage(grid.toImage())
+                //writeImage(grid.toImage())
 
                 // Randomly define next cell
                 val nextCell = cell.getAdjacentCells().random()

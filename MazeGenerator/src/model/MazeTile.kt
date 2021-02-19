@@ -80,13 +80,15 @@ class MazeTile(val positionX: Int, val positionY: Int, private val parentGrid: M
             TileType.UNDEFINED -> Color.WHITE
             TileType.START -> Color.GREEN
             TileType.FINISH -> Color.RED
-            TileType.SEARCHED -> Color.GREENYELLOW
-            TileType.BACKTRACKED -> Color.CYAN
-            TileType.VALIDATED -> Color.BLUE
+            TileType.SEARCHED -> Color.CYAN
+            TileType.BACKTRACKED -> Color.BLUE
+            TileType.VALIDATED -> Color.GREENYELLOW
         }
 
         writableImg.fillUpWithColor(color)
 
         return writableImg
     }
+
+    fun parentGridImage() = parentGrid.toImage()
 }
