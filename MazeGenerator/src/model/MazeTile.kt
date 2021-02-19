@@ -5,6 +5,10 @@ import javafx.scene.image.Image
 import javafx.scene.image.WritableImage
 import javafx.scene.paint.Color
 
+/**
+ * Tile are the smallest component of the maze board. It can either be a corridor or a wall.
+ * Any MazeCell is composed of several MazeTile
+ */
 abstract class MazeTile(val positionX: Int, val positionY: Int) {
 
     companion object {
@@ -20,9 +24,15 @@ abstract class MazeTile(val positionX: Int, val positionY: Int) {
 
     var type: TileType = TileType.UNDEFINED
 
-    abstract fun getNeighbours(): List<MazeTile>
+    // Related MazeCells
+    var topCell: MazeCell? = null
+    var bottomCell: MazeCell? = null
+    var leftCell: MazeCell? = null
+    var rightCell: MazeCell? = null
 
-    fun getSpecificNeighbours(type: TileType) = getNeighbours().filter { cell -> cell.type == type }
+    abstract fun getAdjacentTiles(): List<MazeTile>
+
+    fun getSpecificAdjacentTiles(type: TileType) = getAdjacentTiles().filter { cell -> cell.type == type }
 
     fun toImage(): Image {
         val writableImg = WritableImage(width, height)

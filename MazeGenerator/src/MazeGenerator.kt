@@ -158,7 +158,7 @@ class MazeGenerator {
             val randomTile = grid.board.filter { it.type == MazeTile.TileType.WALL }.random()
             randomTile.type = MazeTile.TileType.CORRIDOR
 
-            randomTile.getSpecificNeighbours(MazeTile.TileType.WALL).forEach { wallStack.add(Pair(it, randomTile)) }
+            randomTile.getSpecificAdjacentTiles(MazeTile.TileType.WALL).forEach { wallStack.add(Pair(it, randomTile)) }
             writeImage(grid.toImage())
         }
 
@@ -179,7 +179,7 @@ class MazeGenerator {
 
             if (otherSide?.type != MazeTile.TileType.CORRIDOR) {
                 tile.type = MazeTile.TileType.CORRIDOR
-                tile.getSpecificNeighbours(MazeTile.TileType.WALL).forEach { wallStack.add(Pair(it, tile)) }
+                tile.getSpecificAdjacentTiles(MazeTile.TileType.WALL).forEach { wallStack.add(Pair(it, tile)) }
 
                 writeImage(grid.toImage())
             }
@@ -196,7 +196,7 @@ class MazeGenerator {
             val randomTile = grid.board.filter { it.type == MazeTile.TileType.WALL }.random()
             randomTile.type = MazeTile.TileType.CORRIDOR
 
-            randomTile.getSpecificNeighbours(MazeTile.TileType.WALL).forEach { wallStack.add(Pair(it, randomTile)) }
+            randomTile.getSpecificAdjacentTiles(MazeTile.TileType.WALL).forEach { wallStack.add(Pair(it, randomTile)) }
             writeImage(grid.toImage())
         }
 
@@ -217,7 +217,7 @@ class MazeGenerator {
 
             if (otherSide?.type != MazeTile.TileType.CORRIDOR) {
                 tile.type = MazeTile.TileType.CORRIDOR
-                tile.getSpecificNeighbours(MazeTile.TileType.WALL).forEach { wallStack.add(Pair(it, tile)) }
+                tile.getSpecificAdjacentTiles(MazeTile.TileType.WALL).forEach { wallStack.add(Pair(it, tile)) }
 
                 //writeImage(grid.toImage())
             }

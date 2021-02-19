@@ -2,7 +2,7 @@ package model
 
 class ArrayListMazeTile(X: Int, Y: Int, private val parentGrid: ArrayListMazeGrid) : MazeTile(X, Y) {
 
-    override fun getNeighbours(): List<MazeTile> {
+    override fun getAdjacentTiles(): List<MazeTile> {
         val neighbours = ArrayList<MazeTile>()
 
         getTopNeighbour()?.let {

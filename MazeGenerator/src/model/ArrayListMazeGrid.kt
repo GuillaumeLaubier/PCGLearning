@@ -50,14 +50,14 @@ class ArrayListMazeGrid(val mazeWidth: Int, val mazeHeight: Int, initialType: Ma
     private fun defineRandomStartAndFinish() {
         board.filter {
             it.type == MazeTile.TileType.BOARD_WALL
-                    && it.getNeighbours().any { neighbour ->
+                    && it.getAdjacentTiles().any { neighbour ->
                 neighbour.type == MazeTile.TileType.CORRIDOR
             }
         }.random().type = MazeTile.TileType.START
 
         board.filter {
             it.type == MazeTile.TileType.BOARD_WALL
-                    && it.getNeighbours().any { neighbour ->
+                    && it.getAdjacentTiles().any { neighbour ->
                 neighbour.type == MazeTile.TileType.CORRIDOR
             }
         }.random().type = MazeTile.TileType.FINISH
