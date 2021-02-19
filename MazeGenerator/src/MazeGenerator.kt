@@ -37,6 +37,47 @@ class MazeGenerator {
         }
     }
 
+    fun generateDepthFirst(width: Int, height: Int): ArrayListMazeGrid {
+        val grid = ArrayListMazeGrid(width, height, MazeTile.TileType.WALL)
+
+        writeImage(grid.toImage())
+
+        recursiveDepthFirst(grid.cellBoard.first())
+        grid.defineStartAndFinish()
+
+        return grid
+    }
+
+    private fun recursiveDepthFirst(cell: MazeCell) {
+        cell.centerTile.type = MazeTile.TileType.CORRIDOR
+
+        writeImage(cell.grid.toImage())
+
+        while (cell.getAdjacentCells().any { it.centerTile.type == MazeTile.TileType.WALL }) {
+            val unvisitedCell = cell.getAdjacentCells().filter { it.centerTile.type == MazeTile.TileType.WALL }
+
+            val randomIndex = (Random.nextFloat() * unvisitedCell.size).toInt()
+
+            val nextCell = unvisitedCell[randomIndex]
+
+            if (cell.centerTile.positionX == nextCell.centerTile.positionX) {
+                if (cell.centerTile.positionY < nextCell.centerTile.positionY) {
+                    cell.bottomTile?.type = MazeTile.TileType.CORRIDOR
+                } else {
+                    cell.topTile?.type = MazeTile.TileType.CORRIDOR
+                }
+            } else {
+                if (cell.centerTile.positionX < nextCell.centerTile.positionX) {
+                    cell.rightTile?.type = MazeTile.TileType.CORRIDOR
+                } else {
+                    cell.leftTile?.type = MazeTile.TileType.CORRIDOR
+                }
+            }
+
+            recursiveDepthFirst(nextCell)
+        }
+    }
+
     fun generateByRecursiveDivision(width: Int, height: Int): ArrayListMazeGrid {
 
         val grid = ArrayListMazeGrid(width, height)
@@ -156,7 +197,8 @@ class MazeGenerator {
             val randomCell = grid.cellBoard.filter { it.centerTile.type == MazeTile.TileType.WALL }.random()
             randomCell.centerTile.type = MazeTile.TileType.CORRIDOR
 
-            randomCell.centerTile.getSpecificAdjacentTiles(MazeTile.TileType.WALL).forEach { wallStack.add(Pair(it, randomCell)) }
+            randomCell.centerTile.getSpecificAdjacentTiles(MazeTile.TileType.WALL)
+                .forEach { wallStack.add(Pair(it, randomCell)) }
 
             writeImage(grid.toImage())
         }
@@ -195,7 +237,10 @@ class MazeGenerator {
     }
 
     // Might be useful later for pathfinding
-    private fun brokenPrimsGeneration(grid: ArrayListMazeGrid, wallStack: ArrayList<Pair<MazeTile, MazeTile>> = ArrayList()) {
+    private fun brokenPrimsGeneration(
+        grid: ArrayListMazeGrid,
+        wallStack: ArrayList<Pair<MazeTile, MazeTile>> = ArrayList()
+    ) {
         if (!grid.board.any { it.type == MazeTile.TileType.CORRIDOR }) {
             // This is the first iteration
 
