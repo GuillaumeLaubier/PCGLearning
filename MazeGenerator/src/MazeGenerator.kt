@@ -11,6 +11,10 @@ class MazeGenerator {
         NORTH, SOUTH, EAST, WEST
     }
 
+    enum class Orientation {
+        HORIZONTAL, VERTICAL
+    }
+
     fun generateFirstTestMaze(width: Int, height: Int): Image {
         val grid = FirstTestMazeGrid(15, 15)
 
@@ -47,92 +51,87 @@ class MazeGenerator {
     }
 
     private fun recursiveDivision(grid: ArrayListMazeGrid, startX: Int, startY: Int, width: Int, height: Int) {
-        if (width < 3 || height < 3) {
+
+        if (height == 0 || width == 0) {
             return
         }
 
-        writeImage(grid.toImage())
+        val endX = startX + width - 1
+        val endY = startY + height - 1
 
-        val randomCell = grid.board.filter {
-            it.type == MazeCell.CellType.UNDEFINED
-                    && it.positionX in (startX + 1)..(startX + width - 2)
-                    && it.positionY in (startY + 1)..(startY + height - 2)
-        }.random()
+        // Define orientation
+        val orientation = if (width < height) {
+            Orientation.HORIZONTAL
+        } else if (width > height) {
+            Orientation.VERTICAL
 
-        // Create horizontal wall
-        grid.board.filter {
-            it.positionY == randomCell.positionY
-                    && it.positionX in startX..(startX + width - 1)
-        }.forEach {
-            it.type = MazeCell.CellType.WALL
+            // If width == height, orientation is random
+        } else if (Random.nextFloat() > 0.5) {
+            Orientation.VERTICAL
+        } else {
+            Orientation.HORIZONTAL
         }
 
-        // Create vertical wall
-        grid.board.filter {
-            it.positionX == randomCell.positionX
-                    && it.positionY in startY..(startY + height - 1)
-        }.forEach {
-            it.type = MazeCell.CellType.WALL
-        }
+        if (orientation == Orientation.HORIZONTAL) {
 
-        // 3 of the 4 wall parts must have holes.
-        val directionForHoles = arrayListOf(Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST)
-        directionForHoles.remove(directionForHoles.random())
-
-        directionForHoles.forEach { direction ->
-            when (direction) {
-                Direction.NORTH -> grid.board.filter {
-                    it.positionX == randomCell.positionX
-                            && it.positionY in startY..(randomCell.positionY - 1)
-                }.random().type = MazeCell.CellType.CORRIDOR
-
-                Direction.SOUTH -> grid.board.filter {
-                    it.positionX == randomCell.positionX
-                            && it.positionY in (randomCell.positionY + 1)..(startY + height - 1)
-                }.random().type = MazeCell.CellType.CORRIDOR
-
-                Direction.EAST -> grid.board.filter {
-                    it.positionY == randomCell.positionY
-                            && it.positionX in (randomCell.positionX + 1)..(startX + width - 1)
-                }.random().type = MazeCell.CellType.CORRIDOR
-
-                Direction.WEST -> grid.board.filter {
-                    it.positionY == randomCell.positionY
-                            && it.positionX in startX..(randomCell.positionX - 1)
-                }.random().type = MazeCell.CellType.CORRIDOR
+            // Not enough space
+            if (height < 3) {
+                return
             }
+
+            writeImage(grid.toImage())
+
+            // Define random Y coordinate for the wall. Make sure it is even.
+            val wallY = (startY..endY).toList().filter { it % 2 == 0 }.random()
+
+            // Define random X coordinate for the hole. Make sure it is odd.
+            val holeX = (startX..endX).toList().filter { it % 2 == 1 }.random()
+
+            // Define horizontal wall
+            grid.board.filter { it.positionY == wallY && it.positionX in startX..endX }.forEach {
+                it.type = MazeCell.CellType.WALL
+            }
+
+            // Dig a hole in this wall
+            grid[holeX, wallY]?.type = MazeCell.CellType.CORRIDOR
+
+            // Repeat for the 2 new subdivisions
+            // Top subdivision
+            recursiveDivision(grid, startX, startY, width, wallY - startY)
+
+            // Bottom subdivision
+            recursiveDivision(grid, startX, wallY + 1, width, endY - wallY)
+
+        } else {
+
+            // Not enough space
+            if (width < 3) {
+                return
+            }
+
+            writeImage(grid.toImage())
+
+            // Define random X coordinate for the wall. Make sure it is even.
+            val wallX = (startX..endX).toList().filter { it % 2 == 0 }.random()
+
+            // Define random Y coordinate for the hole. Make sure it is odd.
+            val holeY = (startY..endY).toList().filter { it % 2 == 1 }.random()
+
+            // Define vertical wall
+            grid.board.filter { it.positionX == wallX && it.positionY in startY..endY }.forEach {
+                it.type = MazeCell.CellType.WALL
+            }
+
+            // Dig a hole in this wall
+            grid[wallX, holeY]?.type = MazeCell.CellType.CORRIDOR
+
+            // Repeat for the 2 new subdivisions
+            // Left subdivision
+            recursiveDivision(grid, startX, startY, wallX - startX, height)
+
+            // Right subdivision
+            recursiveDivision(grid, wallX + 1, startY, endX - wallX, height)
         }
-
-        // Repeat for each subdivision
-        // North West subdivision
-        recursiveDivision(grid, startX, startY, randomCell.positionX - startX, randomCell.positionY - startY)
-
-        // North East subdivision
-        recursiveDivision(
-            grid,
-            randomCell.positionX + 1,
-            startY,
-            startX + width - 1 - randomCell.positionX,
-            randomCell.positionY - startY
-        )
-
-        // South West Subdivision
-        recursiveDivision(
-            grid,
-            startX,
-            randomCell.positionY + 1,
-            randomCell.positionX - startX,
-            startY + height - 1 - randomCell.positionY
-        )
-
-        // South East Subdivision
-        recursiveDivision(
-            grid,
-            randomCell.positionX + 1,
-            randomCell.positionY + 1,
-            startX + width - 1 - randomCell.positionX,
-            startY + height - 1 - randomCell.positionY
-        )
     }
 
 }

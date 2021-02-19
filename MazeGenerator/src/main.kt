@@ -11,7 +11,7 @@ import javax.imageio.ImageIO
 import kotlin.random.Random
 
 fun main() {
-    MazeGenerator().generateByRecursiveDivision(50, 50)
+    MazeGenerator().generateByRecursiveDivision(51, 51)
 
 }
 
