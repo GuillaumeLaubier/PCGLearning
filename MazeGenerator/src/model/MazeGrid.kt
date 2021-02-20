@@ -1,7 +1,6 @@
 package model
 
-import javafx.scene.image.Image
-import javafx.scene.image.WritableImage
+import java.awt.image.BufferedImage
 
 class MazeGrid(val mazeWidth: Int, val mazeHeight: Int, initialType: MazeTile.TileType = MazeTile.TileType.UNDEFINED) {
 
@@ -84,26 +83,29 @@ class MazeGrid(val mazeWidth: Int, val mazeHeight: Int, initialType: MazeTile.Ti
         this[mazeWidth, boardHeight - 1]?.type = MazeTile.TileType.FINISH
     }
 
-    fun toImage(): Image {
-        val writableImg = WritableImage(boardWidth * MazeTile.width, boardHeight * MazeTile.height)
+    fun toImage(): BufferedImage {
+        val bufferedImg = BufferedImage(boardWidth, boardHeight, BufferedImage.TYPE_INT_RGB)
 
         for (x in 0..(boardWidth - 1)) {
             for (y in 0..(boardHeight - 1)) {
-                val cellImage = this[x, y]!!.toImage()
+                val tileImage = this[x, y]!!.toImage()
 
-                for (ix in 0..(MazeTile.width - 1)) {
-                    for (iy in 0..(MazeTile.height - 1)) {
-                        writableImg.pixelWriter.setColor(
-                            x * MazeTile.width + ix,
-                            y * MazeTile.height + iy,
-                            cellImage.pixelReader.getColor(ix, iy)
-                        )
-                    }
-                }
+                bufferedImg.setRGB(x, y, tileImage.getRGB(0, 0))
             }
         }
 
-        return writableImg
+        // Now scale up the image
+
+        val finalWidth = boardWidth * MazeTile.width
+        val finalHeight = boardHeight * MazeTile.height
+
+        val finalImg = BufferedImage(finalWidth, finalHeight, BufferedImage.TYPE_INT_RGB)
+        val graphics = finalImg.createGraphics()
+
+        graphics.drawImage(bufferedImg, 0, 0, finalWidth, finalHeight, null)
+        graphics.dispose()
+
+        return finalImg
     }
 
 }

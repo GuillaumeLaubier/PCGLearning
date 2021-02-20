@@ -1,7 +1,8 @@
 import javafx.embed.swing.SwingFXUtils
-import javafx.scene.image.Image
 import model.MazeTile
 import pathfinder.RightFirstPathFinder
+import java.awt.image.BufferedImage
+import java.io.BufferedOutputStream
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.time.Instant
@@ -10,7 +11,7 @@ import javax.imageio.ImageIO
 
 fun main() {
 
-    val grid = MazeGenerator().generateWilsonMaze(51, 51)
+    val grid = MazeGenerator().generateDepthFirstMaze(51, 51)
     grid.defineStartAndFinish(false)
 
     writeImage(grid.toImage())
@@ -22,13 +23,9 @@ fun main() {
 
 
 
-fun writeImage(image: Image) {
-    val byteOutput = ByteArrayOutputStream()
-
+fun writeImage(image: BufferedImage) {
     val timestamp = DateTimeFormatter.ISO_INSTANT.format(Instant.now())
     val file = File("results/tests/$timestamp.png")
 
-    ImageIO.write(SwingFXUtils.fromFXImage(image, null), "png", byteOutput)
-
-    file.writeBytes(byteOutput.toByteArray())
+    ImageIO.write(image, "png", file)
 }

@@ -3,7 +3,8 @@ package model
 import extension.fillUpWithColor
 import javafx.scene.image.Image
 import javafx.scene.image.WritableImage
-import javafx.scene.paint.Color
+import java.awt.Color
+import java.awt.image.BufferedImage
 
 /**
  * Tile are the smallest component of the maze board. It can either be a corridor or a wall.
@@ -70,24 +71,24 @@ class MazeTile(val positionX: Int, val positionY: Int, private val parentGrid: M
 
     fun getSpecificAdjacentTiles(type: TileType) = getAdjacentTiles().filter { cell -> cell.type == type }
 
-    fun toImage(): Image {
-        val writableImg = WritableImage(width, height)
+    fun toImage(): BufferedImage {
+        val bufferedImg = BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB)
 
         val color = when (type) {
-            TileType.CORRIDOR -> Color.WHITE
-            TileType.WALL, TileType.BOARD_WALL, TileType.BOARD_CORNER -> Color.BLACK
-            TileType.CANDIDATE -> Color.DARKRED
-            TileType.UNDEFINED -> Color.WHITE
-            TileType.START -> Color.GREEN
-            TileType.FINISH -> Color.RED
-            TileType.SEARCHED -> Color.CYAN
-            TileType.BACKTRACKED -> Color.BLUE
-            TileType.VALIDATED -> Color.GREENYELLOW
+            TileType.CORRIDOR -> Color.white
+            TileType.WALL, TileType.BOARD_WALL, TileType.BOARD_CORNER -> Color.black
+            TileType.CANDIDATE -> Color.red
+            TileType.UNDEFINED -> Color.white
+            TileType.START -> Color.green
+            TileType.FINISH -> Color.red
+            TileType.SEARCHED -> Color.cyan
+            TileType.BACKTRACKED -> Color.blue
+            TileType.VALIDATED -> Color.green
         }
 
-        writableImg.fillUpWithColor(color)
+        bufferedImg.setRGB(0, 0, color.rgb)
 
-        return writableImg
+        return bufferedImg
     }
 
     fun parentGridImage() = parentGrid.toImage()
