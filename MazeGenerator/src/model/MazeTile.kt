@@ -71,6 +71,11 @@ class MazeTile(val positionX: Int, val positionY: Int, private val parentGrid: M
 
     fun getSpecificAdjacentTiles(type: TileType) = getAdjacentTiles().filter { cell -> cell.type == type }
 
+    fun isSearchable() =
+        type == MazeTile.TileType.CORRIDOR
+                || type == MazeTile.TileType.FINISH
+                || type == MazeTile.TileType.UNDEFINED
+
     fun toImage(): BufferedImage {
         val bufferedImg = BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB)
 

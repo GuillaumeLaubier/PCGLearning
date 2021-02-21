@@ -1,5 +1,6 @@
 import javafx.embed.swing.SwingFXUtils
 import model.MazeTile
+import pathfinder.BreadthFirstPathFinder
 import pathfinder.RightFirstPathFinder
 import java.awt.image.BufferedImage
 import java.io.BufferedOutputStream
@@ -11,12 +12,12 @@ import javax.imageio.ImageIO
 
 fun main() {
 
-    val grid = MazeGenerator().generateDepthFirstMaze(51, 51)
+    val grid = MazeGenerator().generateWilsonMaze(51, 51)
     grid.defineStartAndFinish(false)
 
     writeImage(grid.toImage())
 
-    RightFirstPathFinder().resolveMaze(grid.board.first { it.type == MazeTile.TileType.START })
+    BreadthFirstPathFinder().resolveMaze(grid.board.first { it.type == MazeTile.TileType.START })
 
     writeImage(grid.toImage())
 }

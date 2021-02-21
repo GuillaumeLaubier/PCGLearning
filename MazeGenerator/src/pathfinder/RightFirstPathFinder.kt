@@ -13,7 +13,7 @@ class RightFirstPathFinder : MazePathFinder() {
     override fun resolveMaze(startTile: MazeTile) {
         assert(startTile.type == MazeTile.TileType.START)
 
-        recursiveRightFirst(startTile.getAdjacentTiles().first { isSearchable(it) })
+        recursiveRightFirst(startTile.getAdjacentTiles().first { it.isSearchable() })
     }
 
     /**
@@ -42,7 +42,7 @@ class RightFirstPathFinder : MazePathFinder() {
                     }
 
                     nextTile?.let {
-                        if (isSearchable(it) && recursiveRightFirst(nextTile)) {
+                        if (it.isSearchable() && recursiveRightFirst(nextTile)) {
                             tile.type = MazeTile.TileType.VALIDATED
                             writeImage(it.parentGridImage())
                             return true
@@ -61,9 +61,4 @@ class RightFirstPathFinder : MazePathFinder() {
         writeImage(tile.parentGridImage())
         return false
     }
-
-    private fun isSearchable(tile: MazeTile) =
-        tile.type == MazeTile.TileType.CORRIDOR
-                || tile.type == MazeTile.TileType.FINISH
-                || tile.type == MazeTile.TileType.UNDEFINED
 }
