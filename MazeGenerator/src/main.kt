@@ -1,5 +1,6 @@
 import javafx.embed.swing.SwingFXUtils
 import model.MazeTile
+import pathfinder.AStarPathFinder
 import pathfinder.BreadthFirstPathFinder
 import pathfinder.RightFirstPathFinder
 import java.awt.image.BufferedImage
@@ -17,7 +18,8 @@ fun main() {
 
     writeImage(grid.toImage())
 
-    BreadthFirstPathFinder().resolveMaze(grid.board.first { it.type == MazeTile.TileType.START })
+    AStarPathFinder().resolveMaze(grid.board.first { it.type == MazeTile.TileType.START },
+        grid.board.first { it.type == MazeTile.TileType.FINISH })
 
     writeImage(grid.toImage())
 }

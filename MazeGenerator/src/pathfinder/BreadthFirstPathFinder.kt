@@ -6,9 +6,9 @@ import java.util.ArrayList
 
 class BreadthFirstPathFinder : MazePathFinder() {
 
-    class PathStep(val tile: MazeTile, var previousStep: PathStep?)
+    private class PathStep(val tile: MazeTile, var previousStep: PathStep?)
 
-    override fun resolveMaze(startTile: MazeTile) {
+    override fun resolveMaze(startTile: MazeTile, endTile: MazeTile?) {
         assert(startTile.type == MazeTile.TileType.START)
 
         val corridors = ArrayList<PathStep>()

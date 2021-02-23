@@ -10,7 +10,7 @@ class RightFirstPathFinder : MazePathFinder() {
         NORTH, SOUTH, EAST, WEST
     }
 
-    override fun resolveMaze(startTile: MazeTile) {
+    override fun resolveMaze(startTile: MazeTile, endTile: MazeTile?) {
         assert(startTile.type == MazeTile.TileType.START)
 
         recursiveRightFirst(startTile.getAdjacentTiles().first { it.isSearchable() })
