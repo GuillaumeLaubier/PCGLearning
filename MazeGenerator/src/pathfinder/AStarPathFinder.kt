@@ -36,7 +36,7 @@ class AStarPathFinder : MazePathFinder() {
                     do {
                         step?.let {
                             it.tile.type = MazeTile.TileType.VALIDATED
-                            writeImage(it.tile.parentGridImage())
+                            writeImage(it.tile.parentGridImage(), "astar")
 
                             step = it.previousStep
                         }
@@ -52,7 +52,7 @@ class AStarPathFinder : MazePathFinder() {
 
                 steps.remove(currentStep)
 
-                writeImage(currentTile.parentGridImage())
+                writeImage(currentTile.parentGridImage(), "astar")
             }
 
         }

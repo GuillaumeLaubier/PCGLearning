@@ -108,4 +108,13 @@ class MazeGrid(val mazeWidth: Int, val mazeHeight: Int, initialType: MazeTile.Ti
         return finalImg
     }
 
+    fun reset() {
+        board.filter { it.type != MazeTile.TileType.WALL
+                && it.type != MazeTile.TileType.BOARD_WALL
+                && it.type != MazeTile.TileType.BOARD_CORNER
+                && it.type != MazeTile.TileType.START
+                && it.type != MazeTile.TileType.FINISH
+        }.forEach { it.type = MazeTile.TileType.CORRIDOR }
+    }
+
 }

@@ -25,7 +25,7 @@ class RightFirstPathFinder : MazePathFinder() {
      */
     private fun recursiveRightFirst(tile: MazeTile): Boolean {
 
-        writeImage(tile.parentGridImage())
+        writeImage(tile.parentGridImage(), "rightfirst")
 
         val searchingOrder = arrayListOf(Direction.EAST, Direction.SOUTH, Direction.WEST, Direction.NORTH)
 
@@ -44,7 +44,7 @@ class RightFirstPathFinder : MazePathFinder() {
                     nextTile?.let {
                         if (it.isSearchable() && recursiveRightFirst(nextTile)) {
                             tile.type = MazeTile.TileType.VALIDATED
-                            writeImage(it.parentGridImage())
+                            writeImage(it.parentGridImage(), "rightfirst")
                             return true
                         }
                     }
@@ -58,7 +58,7 @@ class RightFirstPathFinder : MazePathFinder() {
         }
 
         tile.type = MazeTile.TileType.BACKTRACKED
-        writeImage(tile.parentGridImage())
+        writeImage(tile.parentGridImage(), "rightfirst")
         return false
     }
 }

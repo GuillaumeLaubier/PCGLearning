@@ -31,7 +31,7 @@ class BreadthFirstPathFinder : MazePathFinder() {
                 do {
                     step?.let {
                         it.tile.type = MazeTile.TileType.VALIDATED
-                        writeImage(it.tile.parentGridImage())
+                        writeImage(it.tile.parentGridImage(), "jikstra")
 
                         step = it.previousStep
                     }
@@ -47,7 +47,7 @@ class BreadthFirstPathFinder : MazePathFinder() {
 
             corridors.removeAt(0)
 
-            writeImage(currentTile.parentGridImage())
+            writeImage(currentTile.parentGridImage(), "jikstra")
         }
     }
 

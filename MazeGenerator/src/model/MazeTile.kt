@@ -86,7 +86,7 @@ class MazeTile(val positionX: Int, val positionY: Int, private val parentGrid: M
             TileType.UNDEFINED -> Color.white
             TileType.START -> Color.green
             TileType.FINISH -> Color.red
-            TileType.SEARCHED -> Color.cyan
+            TileType.SEARCHED -> Color.GRAY
             TileType.BACKTRACKED -> Color.blue
             TileType.VALIDATED -> Color.green
         }

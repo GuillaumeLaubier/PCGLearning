@@ -6,6 +6,6 @@ import java.util.ArrayList
 
 abstract class MazePathFinder {
 
-    abstract fun resolveMaze(startTile: MazeTile, endTile: MazeTile? = null)
+    abstract fun resolveMaze(startTile: MazeTile, endTile: MazeTile?)
 
 }
